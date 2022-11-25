@@ -1,0 +1,9 @@
+{
+    "0": {
+        "name": "professor"
+    },
+    "5": {
+        "name": "조장이 기쁨조",
+        "members": ["youngmin", "dongmin", "junho", "taegeon"]
+    }
+}

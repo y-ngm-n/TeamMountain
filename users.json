@@ -1,0 +1,27 @@
+{
+    "송영민": {
+        "pw": "123",
+        "type": "student",
+        "group": "5"
+    },
+    "dongmin": {
+        "pw": 123,
+        "type": "student",
+        "group": "5"
+    },
+    "junho": {
+        "pw": 123,
+        "type": "student",
+        "group": "5"
+    },
+    "taegeon": {
+        "pw": 123,
+        "type": "student",
+        "group": "5"
+    },
+    "professor": {
+        "pw": "123",
+        "type": "professor",
+        "group": "0"
+    }
+}

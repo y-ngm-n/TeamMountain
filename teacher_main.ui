@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>팀플 모아 태산</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>90</y>
+     <width>290</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>팀플 모아 태산 - 교수자</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>220</y>
+     <width>150</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>출석 현황</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>320</y>
+     <width>150</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>기여도 확인</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>270</y>
+     <width>150</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>점수 부여</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_main_to_attendance()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>224</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_main_to_ranking()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>463</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_main_to_contribution()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>btn_main_to_attendance()</slot>
+  <slot>btn_main_to_ranking()</slot>
+  <slot>btn_main_to_contribution()</slot>
+ </slots>
+</ui>
