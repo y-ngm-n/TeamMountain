@@ -9,8 +9,6 @@ import resource_rc
 import numpy as np
 import pandas as pd
 
-from User import *
-from Group import *
 
 global N, count
 global attend
@@ -24,46 +22,46 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-form = resource_path('main.ui')
+form = resource_path('./views/main.ui')
 form_class = uic.loadUiType(form)[0]
 
-form_start = resource_path('start.ui')
+form_start = resource_path('./views/start.ui')
 form_start_window = uic.loadUiType(form_start)[0]
 
-form_login = resource_path('login.ui')
+form_login = resource_path('./views/login.ui')
 form_login_window = uic.loadUiType(form_login)[0]
 
-form_student_login = resource_path('student_login.ui')
+form_student_login = resource_path('./views/student_login.ui')
 form_student_login_window = uic.loadUiType(form_student_login)[0]
 
-form_student = resource_path('student_main.ui')
+form_student = resource_path('./views/student_main.ui')
 form_student_window = uic.loadUiType(form_student)[0]
 
-form_teacher = resource_path('teacher_main.ui')
+form_teacher = resource_path('./views/teacher_main.ui')
 form_teacher_window = uic.loadUiType(form_teacher)[0]
 
-form_timetable = resource_path('timetable.ui')
+form_timetable = resource_path('./views/timetable.ui')
 form_timetable_window = uic.loadUiType(form_timetable)[0]
 
-form_show = resource_path('show_time.ui')
+form_show = resource_path('./views/show_time.ui')
 form_show_window = uic.loadUiType(form_show)[0]
 
-form_ranking = resource_path('student_ranking.ui')
+form_ranking = resource_path('./views/student_ranking.ui')
 form_ranking_window = uic.loadUiType(form_ranking)[0]
 
-form_attendance = resource_path('student_attendance.ui')
+form_attendance = resource_path('./views/student_attendance.ui')
 form_attendance_window = uic.loadUiType(form_attendance)[0]
 
-form_contribution = resource_path('student_contribution.ui')
+form_contribution = resource_path('./views/student_contribution.ui')
 form_contribution_window = uic.loadUiType(form_contribution)[0]
 
-form_teacher_attendance = resource_path('teacher_attendance.ui')
+form_teacher_attendance = resource_path('./views/teacher_attendance.ui')
 form_teacher_attendance_window = uic.loadUiType(form_teacher_attendance)[0]
 
-form_teacher_contribution = resource_path('teacher_contribution.ui')
+form_teacher_contribution = resource_path('./views/teacher_contribution.ui')
 form_teacher_contribution_window = uic.loadUiType(form_teacher_contribution)[0]
 
-form_teacher_ranking = resource_path('teacher_ranking.ui')
+form_teacher_ranking = resource_path('./views/teacher_ranking.ui')
 form_teacher_ranking_window = uic.loadUiType(form_teacher_ranking)[0]
 
 
@@ -89,7 +87,7 @@ class LoginWindow(QDialog, QWidget, form_login_window):
         self.setupUi(self)
 
     def btn_login_clicked(self):
-        with open("users.json") as f:
+        with open("./databases/users.json") as f:
             users = json.load(f)
 
         name = self.input_name.text()
@@ -123,7 +121,7 @@ class WindowClass(QMainWindow, form_class):
             msg.information(self, "Access denied", "접근 권한이 없습니다.")
 
     def btn_to_teacher(self):   # 교수자 DB 만들고 수정할 것
-        if user.type == "professor":
+        if str(type(self.name)) == "<class '__main__.Professor'>":
             self.teacher = TeacherWindow()
         else:
             msg = QMessageBox()
@@ -158,8 +156,8 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.setupUi(self)
         self.label_2.setText("Student : %s" % self.name.studentName)
         for team in teamList:
-            if self.name in team.teamMembers:
-                self.label_3.setText("Team : %s" % team.teamName)
+            if self.name.studentName in team.members:
+                self.label_3.setText("Team : %s" % team.name)
                 break
 
     def btn_main_to_timetable(self):
@@ -172,8 +170,8 @@ class StudentWindow(QDialog, QWidget, form_student_window):
     def btn_main_to_show(self):
         self.hide()
         for team in teamList:
-            if self.name in team.teamMembers:
-                for member in team.teamMembers:
+            if self.name in team.members:
+                for member in team.members:
                     self.show_time_table = ShowWindow(member)
                     self.show_time_table.exec()
                 self.show_time_table = ShowWindow(team)
@@ -998,8 +996,8 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
         self.setupUi(self)
 
         for i in range(9):
-            self.tableWidget.setItem(i, 0, QTableWidgetItem(teamList[i].teamName))
-            self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].teamScore)))
+            self.tableWidget.setItem(i, 0, QTableWidgetItem(teamList[i].name))
+            self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
 
 
 class AttendanceWindow(QDialog, QWidget, form_attendance_window):
@@ -1097,11 +1095,15 @@ class TeacherContributionWindow(QDialog, QWidget, form_teacher_contribution_wind
 
 
 class Team:
-    def __init__(self, name, score):
-        self.timeTable = self.createEmptyDF()
-        self.teamName = name
-        self.teamMembers = []
-        self.teamScore = score
+
+    def __init__(self, num):
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        self.num = num
+        self.name = groups[num]["name"]
+        self.members = groups[num]["members"]
+        self.score = groups[num]["score"]
 
     def createEmptyDF(self):
         myArr = np.zeros((15, 7))
@@ -1114,6 +1116,7 @@ class Team:
     def addTeamMember(self, nameList):
         for name in nameList:
             self.teamMembers.append(Student(name))
+
 
 
 class Student:
@@ -1142,41 +1145,34 @@ class Student:
 
     def matchTime(self):
         for team in teamList:
-            if self in team.teamMembers:
+            if self in team.members:
                 team.timeTable = team.createEmptyDF()
-                for member in team.teamMembers:
+                for member in team.members:
                     team.timeTable = team.timeTable + member.timeTable
 
 
 def logIn(name):
     for team in teamList:
-        for member in team.teamMembers:
-            if member.studentName == name:
-                return member
+        for student in team.members:
+            if student == name:
+                return Student(student)
 
 
 def configureDB():
     global teamList
-    team1 = Team('건우 없는 건우 팀', 100)
-    team2 = Team('B1A3', 100)
-    team3 = Team('알리바이', 100)
-    team4 = Team('아이즈', 100)
-    team5 = Team('조장이 기쁨', 100)
-    team6 = Team('재수강은 안 된다', 100)
-    team7 = Team('CEPO', 100)
-    team8 = Team('한컴', 100)
-    team9 = Team('김이강', 100)
+    teamList = []
+
+    team1 = Team("team1")
+    team2 = Team("team2")
+    team3 = Team("team3")
+    team4 = Team("team4")
+    team5 = Team("team5")
+    team6 = Team("team6")
+    team7 = Team("team7")
+    team8 = Team("team8")
+    team9 = Team("team9")
 
     teamList = [team1, team2, team3, team4, team5, team6, team7, team8, team9]
-    team1.addTeamMember(['박정수', '안정후', '윤태현'])
-    team2.addTeamMember(['박민성', '양동석', '윤세린', '정일묵'])
-    team3.addTeamMember(['김지윤', '김회민', '이재림', '임혜림'])
-    team4.addTeamMember(['송준영', '이지윤', '정은희', '지윤호'])
-    team5.addTeamMember(['김태건', '손동민', '송영민', '이준호'])
-    team6.addTeamMember(['권민선', '최예준', '하서현', '한우석'])
-    team7.addTeamMember(['김민서', '엄지우', '윤상진', '전혜진'])
-    team8.addTeamMember(['송지원', '윤정연', '이수현', '한솔'])
-    team9.addTeamMember(['강서현', '김소미', '김은서', '이채영'])
 
 
 if __name__ == '__main__':
