@@ -5,9 +5,11 @@ import json
 
 class Student:
     def __init__(self, name, team):
-        self.timeTable = self.createEmptyDF()
         self.name = name
-        if name=="temp": return
+        if name=="temp": 
+            self.timeTable = self.createEmptyDF()
+            return
+        self.getTimeTable()
         self.team = team
 
 
@@ -17,6 +19,22 @@ class Student:
         with open(f"./databases/groups.json") as f:
             groups = json.load(f)
         return groups[users[self.name]["group"]]["name"]
+
+
+    def getTimeTable(self):
+        with open(f"./databases/users.json") as f:
+            users = json.load(f)
+        times = users[self.name]["timeTable"]
+        self.timeTable = self.createEmptyDF()
+        for time in times: self.addTime(time)
+
+
+    def setTimeTable(self, impossibleTime):
+        with open(f"./databases/users.json") as f:
+            users = json.load(f)
+        users[self.name]["timeTable"] = impossibleTime
+        with open(f"./databases/users.json", "w", encoding="utf-8") as f:
+            json.dump(users, f, indent=4, ensure_ascii=False)
 
 
     def addTime(self, impossibleTime):
@@ -44,3 +62,8 @@ class Student:
         self.team.timeTable = self.team.createEmptyDF()
         for member in self.team.membersClass:
             self.team.timeTable = self.team.timeTable + member.timeTable
+
+
+class Professor:
+    def __init__(self, name):
+        self.name = name

@@ -17,6 +17,7 @@ class Team:
         self.score = groups[teamNum]["score"]
         self.timeTable = self.createEmptyDF()
 
+
     def createEmptyDF(self):
         myArr = np.zeros((15, 7))
         time = pd.Series(['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00',
@@ -25,11 +26,26 @@ class Team:
         timeTable = timeTable.set_index(time)
         return timeTable
 
+    
+    def addTime(self, impossibleTime):
+        if impossibleTime == '0':
+            return
+        else:
+            impossibleTime = impossibleTime.split()
+            impossibleTime[1] = impossibleTime[1].split('~')
+            impossibleTime[1][0] = impossibleTime[1][0].strip()
+            self.timeTable.loc[impossibleTime[1][0]
+                :impossibleTime[3], impossibleTime[0]] = 1
+            return self.timeTable
+
+
     def addMemberClass(self):
         for name in self.membersName:
             self.membersClass.append(Student(name, self))
+
 
     def matchTime(self):
         self.timeTable = self.createEmptyDF()
         for member in self.membersClass:
             self.timeTable += member.timeTable
+        print(self.timeTable)
