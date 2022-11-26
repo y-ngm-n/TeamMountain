@@ -80,10 +80,16 @@
        <property name="text">
         <string/>
        </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_login_2">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>login</string>
        </property>

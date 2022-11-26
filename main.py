@@ -31,9 +31,6 @@ form_start_window = uic.loadUiType(form_start)[0]
 form_login = resource_path('./views/login.ui')
 form_login_window = uic.loadUiType(form_login)[0]
 
-form_student_login = resource_path('./views/student_login.ui')
-form_student_login_window = uic.loadUiType(form_student_login)[0]
-
 form_student = resource_path('./views/student_main.ui')
 form_student_window = uic.loadUiType(form_student)[0]
 
@@ -66,6 +63,8 @@ form_teacher_ranking_window = uic.loadUiType(form_teacher_ranking)[0]
 
 
 
+
+
 # 시작 화면
 class StartWindow(QMainWindow, form_start_window):
     def __init__(self):
@@ -78,6 +77,7 @@ class StartWindow(QMainWindow, form_start_window):
         self.login.show()
         self.hide()
 
+
 # 로그인 화면
 class LoginWindow(QMainWindow, QWidget, form_login_window):
     def __init__(self):
@@ -88,6 +88,16 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
     def init_ui(self):
         self.setupUi(self)
 
+    # 로그인 함수: 로그인한 사용자 객체를 user로, 사용자가 속한 팀 객체를 team으로 반환 => (user, team) 형태
+    def logIn(self, name):
+        for team in teamList:
+            if name in team.membersName:
+                user = None
+                team.addMemberClass()
+                for mem in team.membersClass:
+                    if mem.name==name: user = mem
+                return user, team
+
     def btn_login_clicked(self):
         with open("./databases/users.json") as f:
             users = json.load(f)
@@ -96,11 +106,12 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
         pw = self.input_pw.text()
         msg = QMessageBox()
 
-        if name in users:
+        if not name: msg.information(self, "Login failed", "이름을 입력해주세요.")
+        elif name in users:
             if pw == users[name]["pw"]:
                 msg.information(self, "Login success", f"{name}님, 환영합니다.")
 
-                self.windowclass = WindowClass(logIn(name))
+                self.windowclass = WindowClass(self.logIn(name))
                 self.windowclass.show()
                 self.hide()
 
@@ -134,23 +145,7 @@ class WindowClass(QMainWindow, QWidget, form_class):
             msg.information(self, "Access denied", "접근 권한이 없습니다.")
 
 
-class StudentLoginWindow(QDialog, QWidget, form_student_login_window):
-    def __init__(self):
-        super(StudentLoginWindow, self).__init__()
-        self.init_ui()
-        self.show()
-
-    def init_ui(self):
-        self.setupUi(self)
-
-    def login(self):
-        name = self.textEdit.toPlainText()
-        if logIn(name):
-            self.close()
-            self.student = StudentWindow(logIn(name))
-
-
-# 학습자 클래스
+# 학습자: 0. 메인 화면
 class StudentWindow(QDialog, QWidget, form_student_window):
     def __init__(self, info):
         super(StudentWindow, self).__init__()
@@ -202,6 +197,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.name.addTime(time)
 
 
+# 학습자: 1. 시간표 등록 화면
 class TimetableWindow(QDialog, QWidget, form_timetable_window):
     def __init__(self, info):
         super(TimetableWindow, self).__init__()
@@ -964,6 +960,7 @@ class TimetableWindow(QDialog, QWidget, form_timetable_window):
         self.temp.addTime("일 23:00 ~ 24:00")
 
 
+# 학습자: 2. 시간표 조회 화면
 class ShowWindow(QDialog, QWidget, form_show_window):
     def __init__(self, info):
         super(ShowWindow, self).__init__()
@@ -986,6 +983,7 @@ class ShowWindow(QDialog, QWidget, form_show_window):
                     self.tableWidget.item(i, j).setBackground(QtGui.QColor(230, 0, 0))
 
 
+# 학습자: 3. 순위 확인 화면
 class RankingWindow(QDialog, QWidget, form_ranking_window):
     def __init__(self):
         super(RankingWindow, self).__init__()
@@ -1002,6 +1000,7 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
             self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
 
 
+# 학습자: 4. 출석 화면
 class AttendanceWindow(QDialog, QWidget, form_attendance_window):
     def __init__(self):
         super(AttendanceWindow, self).__init__()
@@ -1015,6 +1014,7 @@ class AttendanceWindow(QDialog, QWidget, form_attendance_window):
         self.close()
 
 
+# 학습자: 5. 기여도 화면
 class ContributionWindow(QDialog, QWidget, form_contribution_window):
     def __init__(self):
         super(ContributionWindow, self).__init__()
@@ -1096,14 +1096,6 @@ class TeacherContributionWindow(QDialog, QWidget, form_teacher_contribution_wind
         self.close()
 
 
-def logIn(name):
-    for team in teamList:
-        if name in team.membersName:
-            user = None
-            team.addMemberClass()
-            for mem in team.membersClass:
-                if mem.name==name: user = mem
-            return user, team
         
             
 
