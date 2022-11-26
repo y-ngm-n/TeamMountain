@@ -5,15 +5,15 @@ import json
 from PyQt6.QtWidgets import *
 from PyQt6 import uic, QtGui
 from collections import defaultdict
-from views.resources import background_rc
 import numpy as np
 import pandas as pd
 
+from models.User import Student
+from models.Group import Team
+from views.resources import background_rc
 
 global N, count
 global attend
-global user
-global group
 global teamList
 
 
@@ -65,6 +65,8 @@ form_teacher_ranking = resource_path('./views/teacher_ranking.ui')
 form_teacher_ranking_window = uic.loadUiType(form_teacher_ranking)[0]
 
 
+
+# 시작 화면
 class StartWindow(QMainWindow, form_start_window):
     def __init__(self):
         super().__init__()
@@ -76,7 +78,7 @@ class StartWindow(QMainWindow, form_start_window):
         self.login.show()
         self.hide()
 
-
+# 로그인 화면
 class LoginWindow(QDialog, QWidget, form_login_window):
     def __init__(self):
         super().__init__()
@@ -97,6 +99,7 @@ class LoginWindow(QDialog, QWidget, form_login_window):
         if name in users:
             if pw == users[name]["pw"]:
                 msg.information(self, "Login success", f"{name}님, 환영합니다.")
+
                 self.windowclass = WindowClass(logIn(name))
                 self.windowclass.show()
                 self.hide()
@@ -105,23 +108,24 @@ class LoginWindow(QDialog, QWidget, form_login_window):
         else: msg.information(self, "Login failed", "존재하지 않는 사용자입니다.")
 
 
-# 접속 클래스
+# 접속 화면
 class WindowClass(QMainWindow, form_class):
-    def __init__(self, name):
+    def __init__(self, info):
         super().__init__()
-        self.name = name
+        self.info = info
+        self.name, self.team = self.info
         self.setupUi(self)
         self.show()
 
     def btn_to_student(self):
-        if str(type(self.name)) == "<class '__main__.Student'>":
-            self.student = StudentWindow(self.name)
+        if str(type(self.name)) == "<class 'models.User.Student'>":
+            self.student = StudentWindow(self.info)
         else:
             msg = QMessageBox()
             msg.information(self, "Access denied", "접근 권한이 없습니다.")
 
     def btn_to_teacher(self):   # 교수자 DB 만들고 수정할 것
-        if str(type(self.name)) == "<class '__main__.Professor'>":
+        if str(type(self.name)) == "<class 'models.User.Professor'>":
             self.teacher = TeacherWindow()
         else:
             msg = QMessageBox()
@@ -146,36 +150,32 @@ class StudentLoginWindow(QDialog, QWidget, form_student_login_window):
 
 # 학습자 클래스
 class StudentWindow(QDialog, QWidget, form_student_window):
-    def __init__(self, name):
+    def __init__(self, info):
         super(StudentWindow, self).__init__()
-        self.name = name
+        self.info = info
+        self.name, self.team = info
         self.init_ui()
         self.show()
 
     def init_ui(self):
         self.setupUi(self)
-        self.label_2.setText("Student : %s" % self.name.studentName)
-        for team in teamList:
-            if self.name.studentName in team.members:
-                self.label_3.setText("Team : %s" % team.name)
-                break
+        self.label_2.setText(f"Student : {self.name.name}")
+        self.label_3.setText(f"Team : {self.team.name}")
 
     def btn_main_to_timetable(self):
         self.hide()
-        self.timetable = TimetableWindow(self.name)
+        self.timetable = TimetableWindow(self.info)
         self.timetable.exec()
-        self.name.matchTime()
+        self.team.matchTime()
         self.show()
 
     def btn_main_to_show(self):
         self.hide()
-        for team in teamList:
-            if self.name in team.members:
-                for member in team.members:
-                    self.show_time_table = ShowWindow(member)
-                    self.show_time_table.exec()
-                self.show_time_table = ShowWindow(team)
-                self.show_time_table.exec()
+        for member in self.team.membersClass:
+            self.show_time_table = ShowWindow(member)
+            self.show_time_table.exec()
+        self.show_time_table = ShowWindow(self.team)
+        self.show_time_table.exec()
         self.show()
 
     def btn_main_to_ranking(self):
@@ -201,10 +201,11 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
 
 class TimetableWindow(QDialog, QWidget, form_timetable_window):
-    def __init__(self, name):
+    def __init__(self, info):
         super(TimetableWindow, self).__init__()
-        self.name = name
-        self.temp = Student("temp")
+        self.info = info
+        self.name, self.team = info
+        self.temp = Student("temp", self.team)
         self.init_ui()
         self.show()
 
@@ -962,9 +963,9 @@ class TimetableWindow(QDialog, QWidget, form_timetable_window):
 
 
 class ShowWindow(QDialog, QWidget, form_show_window):
-    def __init__(self, name):
+    def __init__(self, info):
         super(ShowWindow, self).__init__()
-        self.name = name
+        self.info = info
         self.init_ui()
         self.show()
 
@@ -972,14 +973,13 @@ class ShowWindow(QDialog, QWidget, form_show_window):
         self.setupUi(self)
         time = ['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00', '16:00 ~ 17:00', '17:00 ~ 18:00', '18:00 ~ 19:00', '19:00 ~ 20:00', '20:00 ~ 21:00', '21:00 ~ 22:00', '22:00 ~ 23:00', '23:00 ~ 24:00']
         day = ['월', '화', '수', '목', '금', '토', '일']
-
-        if str(type(self.name)) == "<class '__main__.Student'>":
-            self.label.setText("%s" % self.name.studentName)
+        if str(type(self.info)) == "<class 'models.User.Student'>":
+            self.label.setText(f"{self.info.name}")
         else:
-            self.label.setText("<<  %s  >>" % self.name.teamName)
+            self.label.setText(f"<<  {self.info.name}  >>")
         for i in range(15):
             for j in range(7):
-                if self.name.timeTable[day[j]][time[i]] == 1:
+                if self.info.timeTable[day[j]][time[i]] == 1:
                     self.tableWidget.setItem(i, j, QTableWidgetItem())
                     self.tableWidget.item(i, j).setBackground(QtGui.QColor(230, 0, 0))
 
@@ -1094,69 +1094,16 @@ class TeacherContributionWindow(QDialog, QWidget, form_teacher_contribution_wind
         self.close()
 
 
-class Team:
-
-    def __init__(self, num):
-        with open(f"./databases/groups.json") as f:
-            groups = json.load(f)
-
-        self.num = num
-        self.name = groups[num]["name"]
-        self.members = groups[num]["members"]
-        self.score = groups[num]["score"]
-
-    def createEmptyDF(self):
-        myArr = np.zeros((15, 7))
-        time = pd.Series(['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00',
-                          '16:00 ~ 17:00', '17:00 ~ 18:00', '18:00 ~ 19:00', '19:00 ~ 20:00', '20:00 ~ 21:00', '21:00 ~ 22:00', '22:00 ~ 23:00', '23:00 ~ 24:00'])
-        timeTable = pd.DataFrame(myArr, columns=['월', '화', '수', '목', '금', '토', '일'])
-        timeTable = timeTable.set_index(time)
-        return timeTable
-
-    def addTeamMember(self, nameList):
-        for name in nameList:
-            self.teamMembers.append(Student(name))
-
-
-
-class Student:
-    def __init__(self, name):
-        self.timeTable = self.createEmptyDF()
-        self.studentName = name
-
-    def addTime(self, impossibleTime):
-        if impossibleTime == '0':
-            return
-        else:
-            impossibleTime = impossibleTime.split()
-            impossibleTime[1] = impossibleTime[1].split('~')
-            impossibleTime[1][0] = impossibleTime[1][0].strip()
-            self.timeTable.loc[impossibleTime[1][0]
-                :impossibleTime[3], impossibleTime[0]] = 1
-            return self.timeTable
-
-    def createEmptyDF(self):
-        myArr = np.zeros((15, 7))
-        time = pd.Series(['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00',
-                          '16:00 ~ 17:00', '17:00 ~ 18:00', '18:00 ~ 19:00', '19:00 ~ 20:00', '20:00 ~ 21:00', '21:00 ~ 22:00', '22:00 ~ 23:00', '23:00 ~ 24:00'])
-        timeTable = pd.DataFrame(myArr, columns=['월', '화', '수', '목', '금', '토', '일'])
-        timeTable = timeTable.set_index(time)
-        return timeTable
-
-    def matchTime(self):
-        for team in teamList:
-            if self in team.members:
-                team.timeTable = team.createEmptyDF()
-                for member in team.members:
-                    team.timeTable = team.timeTable + member.timeTable
-
-
 def logIn(name):
     for team in teamList:
-        for student in team.members:
-            if student == name:
-                return Student(student)
-
+        if name in team.membersName:
+            user = None
+            team.addMemberClass()
+            for mem in team.membersClass:
+                if mem.name==name: user = mem
+            return user, team
+        
+            
 
 def configureDB():
     global teamList

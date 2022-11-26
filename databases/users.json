@@ -2,22 +2,22 @@
     "송영민": {
         "pw": "123",
         "type": "student",
-        "group": "5"
+        "group": "team5"
     },
-    "dongmin": {
+    "손동민": {
         "pw": 123,
         "type": "student",
-        "group": "5"
+        "group": "team5"
     },
-    "junho": {
+    "이준호": {
         "pw": 123,
         "type": "student",
-        "group": "5"
+        "group": "team5"
     },
-    "taegeon": {
+    "김태건": {
         "pw": 123,
         "type": "student",
-        "group": "5"
+        "group": "team5"
     },
     "professor": {
         "pw": "123",

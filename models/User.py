@@ -1,12 +1,23 @@
 import numpy as np
 import pandas as pd
-
+import json
 
 
 class Student:
-    def __init__(self, name):
+    def __init__(self, name, team):
         self.timeTable = self.createEmptyDF()
-        self.studentName = name
+        self.name = name
+        if name=="temp": return
+        self.team = team
+
+
+    def getTeamName(self):
+        with open(f"./databases/users.json") as f:
+            users = json.load(f)
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+        return groups[users[self.name]["group"]]["name"]
+
 
     def addTime(self, impossibleTime):
         if impossibleTime == '0':
@@ -19,6 +30,7 @@ class Student:
                 :impossibleTime[3], impossibleTime[0]] = 1
             return self.timeTable
 
+
     def createEmptyDF(self):
         myArr = np.zeros((15, 7))
         time = pd.Series(['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00',
@@ -27,36 +39,8 @@ class Student:
         timeTable = timeTable.set_index(time)
         return timeTable
 
+
     def matchTime(self):
-        for team in teamList:
-            if self in team.teamMembers:
-                team.timeTable = team.createEmptyDF()
-                for member in team.teamMembers:
-                    team.timeTable = team.timeTable + member.timeTable
-                    
-
-
-# import json
-
-'''
-class User:
-    def __init__(self, name):
-        self.name = name
-
-        with open("users.json") as f:
-            users = json.load(f)
-        user = users[name]
-        self.type = user["type"]
-        self.group = user["group"]
-
-
-
-class Student(User):
-    def __init__(self, name):
-        User.__init__(self, name)
-
-
-class Professor(User):
-    def __init__(self, name):
-        User.__init__(self, name)
-'''
+        self.team.timeTable = self.team.createEmptyDF()
+        for member in self.team.membersClass:
+            self.team.timeTable = self.team.timeTable + member.timeTable
