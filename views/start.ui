@@ -135,27 +135,27 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="resource.qrc"/>
+  <include location="resources/resource.qrc"/>
  </resources>
  <connections>
   <connection>
    <sender>btn_login</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>btn_login_clicked()</slot>
+   <slot>btn_to_login()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>375</x>
-     <y>353</y>
+     <x>354</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
-     <x>218</x>
-     <y>515</y>
+     <x>226</x>
+     <y>-11</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>btn_login_clicked()</slot>
+  <slot>btn_to_login()</slot>
  </slots>
 </ui>

@@ -73,13 +73,13 @@ class StartWindow(QMainWindow, form_start_window):
         self.setupUi(self)
         self.show()
 
-    def btn_login_clicked(self):
+    def btn_to_login(self):
         self.login = LoginWindow()
         self.login.show()
         self.hide()
 
 # 로그인 화면
-class LoginWindow(QDialog, QWidget, form_login_window):
+class LoginWindow(QMainWindow, QWidget, form_login_window):
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -109,7 +109,7 @@ class LoginWindow(QDialog, QWidget, form_login_window):
 
 
 # 접속 화면
-class WindowClass(QMainWindow, form_class):
+class WindowClass(QMainWindow, QWidget, form_class):
     def __init__(self, info):
         super().__init__()
         self.info = info
@@ -120,6 +120,7 @@ class WindowClass(QMainWindow, form_class):
     def btn_to_student(self):
         if str(type(self.name)) == "<class 'models.User.Student'>":
             self.student = StudentWindow(self.info)
+            self.hide()
         else:
             msg = QMessageBox()
             msg.information(self, "Access denied", "접근 권한이 없습니다.")
@@ -127,6 +128,7 @@ class WindowClass(QMainWindow, form_class):
     def btn_to_teacher(self):   # 교수자 DB 만들고 수정할 것
         if str(type(self.name)) == "<class 'models.User.Professor'>":
             self.teacher = TeacherWindow()
+            self.hide()
         else:
             msg = QMessageBox()
             msg.information(self, "Access denied", "접근 권한이 없습니다.")
