@@ -5,7 +5,7 @@ import json
 from PyQt6.QtWidgets import *
 from PyQt6 import uic, QtGui
 from collections import defaultdict
-import resource_rc
+from views.resources import background_rc
 import numpy as np
 import pandas as pd
 
