@@ -47,6 +47,9 @@ form_show_window = uic.loadUiType(form_show)[0]
 form_ranking = resource_path('./views/student_ranking.ui')
 form_ranking_window = uic.loadUiType(form_ranking)[0]
 
+form_team_ranking = resource_path('./views/team_ranking.ui')
+form_team_ranking_window = uic.loadUiType(form_team_ranking)[0]
+
 form_attendance = resource_path('./views/student_attendance.ui')
 form_attendance_window = uic.loadUiType(form_attendance)[0]
 
@@ -248,7 +251,10 @@ class TimetableWindow(QDialog, QWidget, form_timetable_window):
         self.timeList = []
 
     def init_ui(self):
+        global weeks
+
         self.setupUi(self)
+        self.label_23.setText(f"{weeks}주차")
 
     def btn_timetable_to_main(self):
         self.close()
@@ -1023,10 +1029,33 @@ class ShowWindow(QDialog, QWidget, form_show_window):
                     self.tableWidget.item(i, j).setBackground(QtGui.QColor(230, 0, 0))
 
 
-# 학습자: 3. 순위 확인 화면
 class RankingWindow(QDialog, QWidget, form_ranking_window):
     def __init__(self):
         super(RankingWindow, self).__init__()
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+
+    def btn_ranking_to_main(self):
+        self.close()
+
+    def person_ranking(self):
+        self.hide()
+        self.close()
+
+    def team_ranking(self):
+        self.hide()
+        self.team_ranking = TeamRankingWindow()
+        self.team_ranking.exec()
+        self.close()
+
+
+# 학습자: 3. 순위 확인 화면
+class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
+    def __init__(self):
+        super(TeamRankingWindow, self).__init__()
         self.init_ui()
         self.show()
 
