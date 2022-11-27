@@ -48,4 +48,3 @@ class Team:
         self.timeTable = self.createEmptyDF()
         for member in self.membersClass:
             self.timeTable += member.timeTable
-        print(self.timeTable)
