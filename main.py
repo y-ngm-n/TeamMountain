@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import random
 
 from PyQt6.QtWidgets import *
 from PyQt6 import uic, QtGui
@@ -15,7 +16,7 @@ from views.resources import background_rc
 global N, count
 global attend
 global teamList
-
+global weeks
 
 def resource_path(relative_path):
     base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
@@ -52,6 +53,9 @@ form_attendance_window = uic.loadUiType(form_attendance)[0]
 form_contribution = resource_path('./views/student_contribution.ui')
 form_contribution_window = uic.loadUiType(form_contribution)[0]
 
+form_random = resource_path('./views/student_random.ui')
+form_random_window = uic.loadUiType(form_random)[0]
+
 form_teacher_attendance = resource_path('./views/teacher_attendance.ui')
 form_teacher_attendance_window = uic.loadUiType(form_teacher_attendance)[0]
 
@@ -70,11 +74,11 @@ class StartWindow(QMainWindow, form_class):
         self.show()
 
     def btn_to_student(self):
-        self.close()
+        self.hide()
         self.studen = LoginWindow("student")
 
     def btn_to_teacher(self):   # 교수자 DB 만들고 수정할 것
-        self.close()
+        self.hide()
         self.teacher = LoginWindow("professor")
 
 
@@ -102,9 +106,12 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
         return Professor(name), None
 
     def btn_login_clicked(self):
+        global weeks
+
         with open("./databases/users.json") as f:
             users = json.load(f)
 
+        weeks = self.spinBox.value()
         name = self.input_name.text()
         pw = self.input_pw.text()
         msg = QMessageBox()
@@ -134,7 +141,7 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
 
     def btn_cancel_clicked(self):
         self.close()
-        self.start = StartWindow()
+        myWindow.show()
 
 
 # 접속 화면
@@ -173,9 +180,12 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.show()
 
     def init_ui(self):
+        global weeks
+
         self.setupUi(self)
-        self.label_2.setText(f"Student : {self.name.name}")
-        self.label_3.setText(f"Team : {self.team.name}")
+        self.label_2.setText(f"{weeks}주차")
+        self.label_3.setText(f"Student : {self.name.name}")
+        self.label_4.setText(f"Team : {self.team.name}")
 
     def btn_main_to_timetable(self):
         self.hide()
@@ -211,13 +221,19 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.contribution.exec()
         self.show()
 
+    def btn_main_to_random(self):
+        self.hide()
+        self.set_random = RandomWindow(self.team)
+        self.set_random.exec()
+        self.show()
+
     def add_time(self, time):
         self.name.addTime(time)
 
     def logout(self):
         self.team.membersClass = []
         self.close()
-        self.login = StartWindow()
+        myWindow.show()
 
 
 # 학습자: 1. 시간표 등록 화면
@@ -989,7 +1005,10 @@ class ShowWindow(QDialog, QWidget, form_show_window):
         self.show()
 
     def init_ui(self):
+        global weeks
+
         self.setupUi(self)
+        self.label_2.setText(f"{weeks}주차")
         time = ['09:00 ~ 10:00', '10:00 ~ 11:00', '11:00 ~ 12:00', '12:00 ~ 13:00', '13:00 ~ 14:00', '14:00 ~ 15:00', '15:00 ~ 16:00', '16:00 ~ 17:00', '17:00 ~ 18:00', '18:00 ~ 19:00', '19:00 ~ 20:00', '20:00 ~ 21:00', '21:00 ~ 22:00', '22:00 ~ 23:00', '23:00 ~ 24:00']
         day = ['월', '화', '수', '목', '금', '토', '일']
         if str(type(self.info)) == "<class 'models.User.Student'>":
@@ -1049,6 +1068,34 @@ class ContributionWindow(QDialog, QWidget, form_contribution_window):
         self.close()
 
 
+class RandomWindow(QDialog, QWidget, form_random_window):
+    def __init__(self, team):
+        super(RandomWindow, self).__init__()
+        self.team = team
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+
+    def Make_Number(self):
+        member = []
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+        for name in self.team.membersName:
+            member.append(name)
+        Number = []
+        for i in range(1):
+            Number.append(member[random.randint(0, len(member) - 1)])
+        return Number
+
+    def randperson(self, label):
+        Number = self.Make_Number()
+        text = f'{Number[0]} 당첨!'
+        Number.sort()
+        self.label.setText(text)
+
+
 # 교수자: 0. 메인 화면
 class TeacherWindow(QDialog, QWidget, form_teacher_window):
     def __init__(self, info):
@@ -1081,7 +1128,7 @@ class TeacherWindow(QDialog, QWidget, form_teacher_window):
     def logout(self):
         self.team.membersClass = []
         self.close()
-        self.login = StartWindow()
+        myWindow.show()
 
 
 # 교수자: 1. 순위 확인 화면
