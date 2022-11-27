@@ -295,5 +295,40 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_add()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>318</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>295</x>
+     <y>383</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget</receiver>
+   <slot>repaint()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>25</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>202</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>btn_add()</slot>
+ </slots>
 </ui>

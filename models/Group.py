@@ -17,6 +17,7 @@ class Team:
         self.score = groups[teamNum]["score"]
         self.timeTable = self.createEmptyDF()
         self.todoList = []
+        self.createTodoList()
         self.attendance = []
 
     def createEmptyDF(self):
@@ -46,7 +47,6 @@ class Team:
         self.timeTable = self.createEmptyDF()
         for member in self.membersClass:
             self.timeTable += member.timeTable
-        print(self.timeTable)
 
     def createTodoList(self):
         self.todoList = pd.DataFrame(columns=['todo', '중요도', '사람', '완료여부'])
@@ -56,7 +56,6 @@ class Team:
         record = pd.Series(
             {'todo': todo, '중요도': importance, '사람': None, '완료여부': 'X'})
         self.todoList = self.todoList.append(record, ignore_index=True)
-
     def completeTodoList(self, todo):
         self.todoList.loc[todo, '완료여부'] = 'O'
 

@@ -59,6 +59,9 @@ form_leader_contribution_window = uic.loadUiType(form_leader_contribution)[0]
 form_member_contribution = resource_path('./views/member_list.ui')
 form_member_contribution_window = uic.loadUiType(form_member_contribution)[0]
 
+form_todo = resource_path('./views/add_todo.ui')
+form_todo_window = uic.loadUiType(form_todo)[0]
+
 form_random = resource_path('./views/student_random.ui')
 form_random_window = uic.loadUiType(form_random)[0]
 
@@ -80,12 +83,12 @@ class StartWindow(QMainWindow, form_class):
         self.show()
 
     def btn_to_student(self):
+        self.student = LoginWindow("student")
         self.hide()
-        self.studen = LoginWindow("student")
 
     def btn_to_teacher(self):   # 교수자 DB 만들고 수정할 것
-        self.hide()
         self.teacher = LoginWindow("professor")
+        self.hide()
 
 
 # 로그인 화면
@@ -211,7 +214,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_ranking(self):
         self.hide()
-        self.ranking = RankingWindow()
+        self.ranking = RankingWindow(self.team)
         self.ranking.exec()
         self.show()
 
@@ -223,7 +226,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_contribution(self):
         self.hide()
-        self.contribution = MemberContributionWindow(self.team)
+        self.contribution = LeaderContributionWindow(self.team)
         self.contribution.exec()
         self.show()
 
@@ -1033,8 +1036,9 @@ class ShowWindow(QDialog, QWidget, form_show_window):
 
 
 class RankingWindow(QDialog, QWidget, form_ranking_window):
-    def __init__(self):
+    def __init__(self, team):
         super(RankingWindow, self).__init__()
+        self.team = team
         self.init_ui()
         self.show()
 
@@ -1050,7 +1054,7 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
 
     def team_ranking(self):
         self.hide()
-        self.team_ranking = TeamRankingWindow()
+        self.team_ranking = TeamRankingWindow(self.team)
         self.team_ranking.exec()
         self.close()
 
@@ -1089,16 +1093,34 @@ class AttendanceWindow(QDialog, QWidget, form_attendance_window):
 
 # 학습자: 5. 기여도 화면
 class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window):
-    def __init__(self):
+    def __init__(self, team):
         super(LeaderContributionWindow, self).__init__()
+        self.team = team
         self.init_ui()
         self.show()
 
     def init_ui(self):
         self.setupUi(self)
 
+        column = ['todo', '중요도', '사람', '완료여부']
+
+        for i in range(len(self.team.todoList)):
+            for j in range(3):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
+
     def btn_contribution_to_main(self):
         self.close()
+
+    def btn_add(self):
+        self.add = addToDoWindow(self.team)
+        self.add.exec()
+
+        column = ['todo', '중요도', '사람', '완료여부']
+
+        for i in range(len(self.team.todoList)):
+            for j in range(3):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
+        self.tableWidget.update()
 
 
 class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window):
@@ -1110,13 +1132,31 @@ class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window
 
     def init_ui(self):
         self.setupUi(self)
-        self.team.addTodoList('먹기', 3)
 
-        for i in range(10):
+        column = ['todo', '중요도', '사람', '완료여부']
+
+        for i in range(len(self.team.todoList)):
             for j in range(3):
-                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList[i][j]))
+                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
 
     def btn_contribution_to_main(self):
+        self.close()
+
+
+class addToDoWindow(QDialog, QWidget, form_todo_window):
+    def __init__(self, team):
+        super(addToDoWindow, self).__init__()
+        self.team = team
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+
+    def btn_add_to_list(self):
+        todo = self.lineEdit.text()
+        importance = self.lineEdit_2.text()
+        self.team.addTodoList(todo, importance)
         self.close()
 
 
