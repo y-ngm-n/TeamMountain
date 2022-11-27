@@ -1077,11 +1077,10 @@ class RandomWindow(QDialog, QWidget, form_random_window):
 
     def init_ui(self):
         self.setupUi(self)
+        self.label.setText(f"당첨자는?")
 
     def Make_Number(self):
         member = []
-        with open(f"./databases/groups.json") as f:
-            groups = json.load(f)
         for name in self.team.membersName:
             member.append(name)
         Number = []
