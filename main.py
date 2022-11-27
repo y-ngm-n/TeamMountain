@@ -95,6 +95,9 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
             if name in team.membersName:
                 user = None
                 team.addMemberClass()
+                for i in team.membersClass:
+                    print(i.name)
+                print(team)
                 for mem in team.membersClass:
                     if mem.name == name:
                         user = mem
@@ -112,21 +115,20 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
         if not name: msg.information(self, "Login failed", "이름을 입력해주세요.")
         elif name in users:
             if pw == users[name]["pw"]:
+                info = self.logIn(name)
+                user, team = info
                 if self.type == "student":
-                    if str(type(self.logIn(name)[0])) == "<class 'models.User.Student'>":
-                        msg.information(self, "Login success", f"{name}님, 환영합니다.")
+                    if str(type(user)) == "<class 'models.User.Student'>":
+                        msg.information(self, "Login success", f"{user.name}님, 환영합니다.")
                         self.hide()
-                        self.windowclass = StudentWindow(self.logIn(name))
-                    else:
-                        msg = QMessageBox()
-                        msg.information(self, "Access denied", "접근 권한이 없습니다.")
+                        self.windowclass = StudentWindow(info)
+                    else: msg.information(self, "Access denied", "접근 권한이 없습니다.")
                 else:
-                    if str(type(self.logIn(name)[0])) == "<class 'models.User.Professor'>":
-                        msg.information(self, "Login success", f"{name}님, 환영합니다.")
+                    if str(type(user)) == "<class 'models.User.Professor'>":
+                        msg.information(self, "Login success", f"{user.name}님, 환영합니다.")
                         self.hide()
-                        self.windowclass = TeacherWindow()
+                        self.windowclass = TeacherWindow(info)
                     else:
-                        msg = QMessageBox()
                         msg.information(self, "Access denied", "접근 권한이 없습니다.")
 
             else: msg.information(self, "Login failed", "비밀번호를 확인해주세요.")
@@ -186,6 +188,8 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_show(self):
         self.hide()
+        for i in self.team.membersClass:
+            print()
         for member in self.team.membersClass:
             self.show_time_table = ShowWindow(member)
             self.show_time_table.exec()
