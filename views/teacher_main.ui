@@ -44,7 +44,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>출석 현황</string>
+    <string>활동 기록 조회</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
@@ -57,7 +57,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>기여도 확인</string>
+    <string>기여도 조회</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_3">

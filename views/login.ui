@@ -157,6 +157,12 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>15</number>
+    </property>
    </widget>
    <zorder>label</zorder>
    <zorder>label_3</zorder>

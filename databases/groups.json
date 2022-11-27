@@ -1,47 +1,91 @@
 {
     "team1": {
-        "name": "건우 없는 건우 팀",
-        "members": ["박정수", "안정후", "윤태현"],
+        "name": "\uac74\uc6b0 \uc5c6\ub294 \uac74\uc6b0 \ud300",
+        "members": [
+            "\ubc15\uc815\uc218",
+            "\uc548\uc815\ud6c4",
+            "\uc724\ud0dc\ud604"
+        ],
         "score": 100
     },
     "team2": {
         "name": "B1A4",
-        "members": ["박민성", "양동석", "윤세린", "정일묵"],
+        "members": [
+            "\ubc15\ubbfc\uc131",
+            "\uc591\ub3d9\uc11d",
+            "\uc724\uc138\ub9b0",
+            "\uc815\uc77c\ubb35"
+        ],
         "score": 100
     },
     "team3": {
-        "name": "알리바이",
-        "members": ["김지윤", "김회민", "이재림", "임혜림"],
-        "score": 100
+        "name": "\uc54c\ub9ac\ubc14\uc774",
+        "members": [
+            "\uae40\uc9c0\uc724",
+            "\uae40\ud68c\ubbfc",
+            "\uc774\uc7ac\ub9bc",
+            "\uc784\ud61c\ub9bc"
+        ],
+        "score": 30
     },
     "team4": {
-        "name": "아이즈",
-        "members": ["송준영", "이지윤", "정은희", "지윤호"],
+        "name": "\uc544\uc774\uc988",
+        "members": [
+            "\uc1a1\uc900\uc601",
+            "\uc774\uc9c0\uc724",
+            "\uc815\uc740\ud76c",
+            "\uc9c0\uc724\ud638"
+        ],
         "score": 100
     },
     "team5": {
-        "name": "조장이 기쁨",
-        "members": ["김태건", "손동민", "송영민", "이준호"],
+        "name": "\uc870\uc7a5\uc774 \uae30\uc068",
+        "members": [
+            "\uae40\ud0dc\uac74",
+            "\uc190\ub3d9\ubbfc",
+            "\uc1a1\uc601\ubbfc",
+            "\uc774\uc900\ud638"
+        ],
         "score": 100
     },
     "team6": {
-        "name": "재수강은 안 된다",
-        "members": ["권민선", "최예준", "하서현", "한우석"],
+        "name": "\uc7ac\uc218\uac15\uc740 \uc548 \ub41c\ub2e4",
+        "members": [
+            "\uad8c\ubbfc\uc120",
+            "\ucd5c\uc608\uc900",
+            "\ud558\uc11c\ud604",
+            "\ud55c\uc6b0\uc11d"
+        ],
         "score": 100
     },
     "team7": {
         "name": "CEPO",
-        "members": ["김민서", "엄지우", "윤상진", "전혜진"],
+        "members": [
+            "\uae40\ubbfc\uc11c",
+            "\uc5c4\uc9c0\uc6b0",
+            "\uc724\uc0c1\uc9c4",
+            "\uc804\ud61c\uc9c4"
+        ],
         "score": 100
     },
     "team8": {
-        "name": "한컴",
-        "members": ["송지원", "윤정연", "이수현", "한솔"],
-        "score": 100
+        "name": "\ud55c\ucef4",
+        "members": [
+            "\uc1a1\uc9c0\uc6d0",
+            "\uc724\uc815\uc5f0",
+            "\uc774\uc218\ud604",
+            "\ud55c\uc194"
+        ],
+        "score": 10
     },
     "team9": {
-        "name": "김이강",
-        "members": ["강서현", "김소미", "김은서", "이채영"],
+        "name": "\uae40\uc774\uac15",
+        "members": [
+            "\uac15\uc11c\ud604",
+            "\uae40\uc18c\ubbf8",
+            "\uae40\uc740\uc11c",
+            "\uc774\ucc44\uc601"
+        ],
         "score": 100
     }
 }

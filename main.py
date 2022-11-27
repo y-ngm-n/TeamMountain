@@ -76,8 +76,14 @@ form_teacher_attendance_window = uic.loadUiType(form_teacher_attendance)[0]
 form_teacher_contribution = resource_path('./views/teacher_contribution.ui')
 form_teacher_contribution_window = uic.loadUiType(form_teacher_contribution)[0]
 
-form_teacher_ranking = resource_path('./views/teacher_ranking.ui')
+form_teacher_ranking = resource_path('./views/teacher_score.ui')
 form_teacher_ranking_window = uic.loadUiType(form_teacher_ranking)[0]
+
+form_teacher_score = resource_path('./views/teacher_team_score.ui')
+form_teacher_score_window = uic.loadUiType(form_teacher_score)[0]
+
+form_teacher_temp = resource_path('./views/teacher_temp.ui')
+form_teacher_temp_window = uic.loadUiType(form_teacher_temp)[0]
 
 
 # 시작 화면
@@ -230,8 +236,13 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.show()
 
     def btn_main_to_contribution(self):
+        with open(f"./databases/users.json") as f:
+            users = json.load(f)
         self.hide()
-        self.contribution = LeaderContributionWindow(self.team)
+        if users[self.name.name]["leader"] == 1:
+            self.contribution = LeaderContributionWindow(self.team)
+        else:
+            self.contribution = MemberContributionWindow(self.team)
         self.contribution.exec()
         self.show()
 
@@ -1145,6 +1156,29 @@ class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window
             for j in range(3):
                 self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
 
+        self.comboBox.addItem(None)
+        self.comboBox_2.addItem(None)
+        self.comboBox_3.addItem(None)
+        self.comboBox_4.addItem(None)
+        self.comboBox_5.addItem(None)
+        self.comboBox_6.addItem(None)
+        self.comboBox_7.addItem(None)
+        self.comboBox_8.addItem(None)
+        self.comboBox_9.addItem(None)
+        self.comboBox_10.addItem(None)
+
+        for name in self.team.membersName:
+            self.comboBox.addItem(name)
+            self.comboBox_2.addItem(name)
+            self.comboBox_3.addItem(name)
+            self.comboBox_4.addItem(name)
+            self.comboBox_5.addItem(name)
+            self.comboBox_6.addItem(name)
+            self.comboBox_7.addItem(name)
+            self.comboBox_8.addItem(name)
+            self.comboBox_9.addItem(name)
+            self.comboBox_10.addItem(name)
+
     def btn_contribution_to_main(self):
         self.close()
 
@@ -1242,8 +1276,7 @@ class TeacherWindow(QDialog, QWidget, form_teacher_window):
         self.show()
 
     def btn_main_to_attendance(self):
-        self.hide()
-        self.attendance = TeacherAttendanceWindow()
+        self.attendance = TeacherTempWindow()
         self.attendance.exec()
         self.show()
 
@@ -1259,19 +1292,158 @@ class TeacherWindow(QDialog, QWidget, form_teacher_window):
         myWindow.show()
 
 
-# 교수자: 1. 순위 확인 화면
-class TeacherRankingWindow(QDialog, QWidget, form_teacher_ranking_window):
+class TeacherTempWindow(QDialog, QWidget, form_teacher_temp_window):
     def __init__(self):
-        super(TeacherRankingWindow, self).__init__()
+        super(TeacherTempWindow, self).__init__()
         self.init_ui()
         self.show()
 
     def init_ui(self):
         self.setupUi(self)
 
-    def btn_ranking_to_main(self):
-        self.close()
+    def btn_team_number(self):
+        pass
 
+
+# 교수자: 1. 점수 부여 화면
+class TeacherRankingWindow(QDialog, QWidget, form_teacher_ranking_window):
+    def __init__(self):
+        super(TeacherRankingWindow, self).__init__()
+        self.score = []
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+        self.label.setText(self.getscore(1))
+        self.label_2.setText(self.getscore(2))
+        self.label_3.setText(self.getscore(3))
+        self.label_4.setText(self.getscore(4))
+        self.label_5.setText(self.getscore(5))
+        self.label_6.setText(self.getscore(6))
+        self.label_7.setText(self.getscore(7))
+        self.label_8.setText(self.getscore(8))
+        self.label_9.setText(self.getscore(9))
+
+## groups.json에서 점수 가져오기
+    def getscore(self, teamnum):
+        with open(f"./databases/groups.json", encoding='UTF-8') as f:
+            groups = json.load(f)
+        self.score.append(groups["team1"]["score"])
+        self.score.append(groups["team2"]["score"])
+        self.score.append(groups["team3"]["score"])
+        self.score.append(groups["team4"]["score"])
+        self.score.append(groups["team5"]["score"])
+        self.score.append(groups["team6"]["score"])
+        self.score.append(groups["team7"]["score"])
+        self.score.append(groups["team8"]["score"])
+        self.score.append(groups["team9"]["score"])
+        return str(self.score[teamnum - 1])
+
+    def btn_score_1(self):
+        self.score_window = TeacherScoreWindow(1)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_2(self):
+        self.score_window = TeacherScoreWindow(2)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_3(self):
+        self.score_window = TeacherScoreWindow(3)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_4(self):
+        self.score_window = TeacherScoreWindow(4)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_5(self):
+        self.score_window = TeacherScoreWindow(5)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_6(self):
+        self.score_window = TeacherScoreWindow(6)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_7(self):
+        self.score_window = TeacherScoreWindow(7)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_8(self):
+        self.score_window = TeacherScoreWindow(8)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def btn_score_9(self):
+        self.score_window = TeacherScoreWindow(9)
+        self.score_window.exec()
+        self.label_repaint()
+
+    def label_repaint(self):
+        self.score = []
+        self.label.setText(self.getscore(1))
+        self.label_2.setText(self.getscore(2))
+        self.label_3.setText(self.getscore(3))
+        self.label_4.setText(self.getscore(4))
+        self.label_5.setText(self.getscore(5))
+        self.label_6.setText(self.getscore(6))
+        self.label_7.setText(self.getscore(7))
+        self.label_8.setText(self.getscore(8))
+        self.label_9.setText(self.getscore(9))
+        self.label.repaint()
+        self.label_2.repaint()
+        self.label_3.repaint()
+        self.label_4.repaint()
+        self.label_5.repaint()
+        self.label_6.repaint()
+        self.label_7.repaint()
+        self.label_8.repaint()
+        self.label_9.repaint()
+
+
+class TeacherScoreWindow(QDialog, QWidget, form_teacher_score_window):
+    def __init__(self, num):
+        super(TeacherScoreWindow, self).__init__()
+        self.team = num
+        self.score = []
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+        self.label.setText(f'{self.team}조 점수 입력 : ')
+
+    def btn_score(self):
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+        if self.team == 1:
+            groups["team1"]["score"] = int(self.spinBox.value())
+        elif self.team == 2:
+            groups["team2"]["score"] = int(self.spinBox.value())
+        elif self.team == 3:
+            groups["team3"]["score"] = int(self.spinBox.value())
+        elif self.team == 4:
+            groups["team4"]["score"] = int(self.spinBox.value())
+        elif self.team == 5:
+            groups["team5"]["score"] = int(self.spinBox.value())
+        elif self.team == 6:
+            groups["team6"]["score"] = int(self.spinBox.value())
+        elif self.team == 7:
+            groups["team7"]["score"] = int(self.spinBox.value())
+        elif self.team == 8:
+            groups["team8"]["score"] = int(self.spinBox.value())
+        else:
+            groups["team9"]["score"] = int(self.spinBox.value())
+        with open(f"./databases/groups.json", "w") as f:
+            json.dump(groups, f, indent=4)
+
+        self.close()
 
 # 교수자: 2. 출석 화면
 class TeacherAttendanceWindow(QDialog, QWidget, form_teacher_attendance_window):
@@ -1301,8 +1473,8 @@ class TeacherContributionWindow(QDialog, QWidget, form_teacher_contribution_wind
         self.close()
 
 
-        
-            
+
+
 
 def configureDB():
     global teamList
