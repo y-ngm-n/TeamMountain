@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>순위 조회</string>
+   <string>점수 확인</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -28,7 +28,7 @@
     </font>
    </property>
    <property name="text">
-    <string>순위 조회</string>
+    <string>점수 확인</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -57,7 +57,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>팀 별 순위</string>
+    <string>팀 별 점수</string>
    </property>
   </widget>
  </widget>

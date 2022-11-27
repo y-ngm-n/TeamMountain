@@ -16,40 +16,40 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>140</x>
      <y>310</y>
      <width>150</width>
      <height>32</height>
     </rect>
    </property>
    <property name="text">
-    <string>순위 보기</string>
+    <string>점수 확인</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>230</y>
-     <width>150</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>출석 체크</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_4">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
+     <x>140</x>
      <y>270</y>
      <width>150</width>
      <height>32</height>
     </rect>
    </property>
    <property name="text">
-    <string>기여도 부여</string>
+    <string>일정 관리</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_4">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>270</y>
+     <width>150</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ToDoList</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -76,7 +76,7 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>140</x>
      <y>230</y>
      <width>150</width>
      <height>32</height>
@@ -89,8 +89,8 @@
   <widget class="QPushButton" name="pushButton_5">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>270</y>
+     <x>340</x>
+     <y>230</y>
      <width>150</width>
      <height>32</height>
     </rect>
@@ -129,7 +129,7 @@
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>410</y>
+     <y>390</y>
      <width>150</width>
      <height>32</height>
     </rect>
@@ -154,7 +154,7 @@
   <widget class="QPushButton" name="pushButton_7">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>340</x>
      <y>310</y>
      <width>150</width>
      <height>32</height>
