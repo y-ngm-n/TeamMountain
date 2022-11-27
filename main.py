@@ -53,8 +53,11 @@ form_team_ranking_window = uic.loadUiType(form_team_ranking)[0]
 form_attendance = resource_path('./views/student_attendance.ui')
 form_attendance_window = uic.loadUiType(form_attendance)[0]
 
-form_contribution = resource_path('./views/student_contribution.ui')
-form_contribution_window = uic.loadUiType(form_contribution)[0]
+form_leader_contribution = resource_path('./views/leader_list.ui')
+form_leader_contribution_window = uic.loadUiType(form_leader_contribution)[0]
+
+form_member_contribution = resource_path('./views/member_list.ui')
+form_member_contribution_window = uic.loadUiType(form_member_contribution)[0]
 
 form_random = resource_path('./views/student_random.ui')
 form_random_window = uic.loadUiType(form_random)[0]
@@ -220,7 +223,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_contribution(self):
         self.hide()
-        self.contribution = ContributionWindow()
+        self.contribution = MemberContributionWindow(self.team)
         self.contribution.exec()
         self.show()
 
@@ -1054,8 +1057,9 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
 
 # 학습자: 3. 순위 확인 화면
 class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
-    def __init__(self):
+    def __init__(self, team):
         super(TeamRankingWindow, self).__init__()
+        self.team = team
         self.init_ui()
         self.show()
 
@@ -1084,14 +1088,33 @@ class AttendanceWindow(QDialog, QWidget, form_attendance_window):
 
 
 # 학습자: 5. 기여도 화면
-class ContributionWindow(QDialog, QWidget, form_contribution_window):
+class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window):
     def __init__(self):
-        super(ContributionWindow, self).__init__()
+        super(LeaderContributionWindow, self).__init__()
         self.init_ui()
         self.show()
 
     def init_ui(self):
         self.setupUi(self)
+
+    def btn_contribution_to_main(self):
+        self.close()
+
+
+class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window):
+    def __init__(self, team):
+        super(MemberContributionWindow, self).__init__()
+        self.team = team
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+        self.team.addTodoList('먹기', 3)
+
+        for i in range(10):
+            for j in range(3):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList[i][j]))
 
     def btn_contribution_to_main(self):
         self.close()
