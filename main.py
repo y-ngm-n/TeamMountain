@@ -231,8 +231,13 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.show()
 
     def btn_main_to_contribution(self):
+        with open(f"./databases/users.json") as f:
+            users = json.load(f)
         self.hide()
-        self.contribution = LeaderContributionWindow(self.team)
+        if users[self.name.name]["leader"] == 1:
+            self.contribution = LeaderContributionWindow(self.team)
+        else:
+            self.contribution = MemberContributionWindow(self.team)
         self.contribution.exec()
         self.show()
 
