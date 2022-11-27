@@ -62,26 +62,27 @@ form_teacher_ranking = resource_path('./views/teacher_ranking.ui')
 form_teacher_ranking_window = uic.loadUiType(form_teacher_ranking)[0]
 
 
-
-
-
 # 시작 화면
-class StartWindow(QMainWindow, form_start_window):
+class StartWindow(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.show()
 
-    def btn_to_login(self):
-        self.login = LoginWindow()
-        self.login.show()
-        self.hide()
+    def btn_to_student(self):
+        self.close()
+        self.studen = LoginWindow("student")
+
+    def btn_to_teacher(self):   # 교수자 DB 만들고 수정할 것
+        self.close()
+        self.teacher = LoginWindow("professor")
 
 
 # 로그인 화면
 class LoginWindow(QMainWindow, QWidget, form_login_window):
-    def __init__(self):
+    def __init__(self, login_type):
         super().__init__()
+        self.type = login_type
         self.init_ui()
         self.show()
 
@@ -95,7 +96,8 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
                 user = None
                 team.addMemberClass()
                 for mem in team.membersClass:
-                    if mem.name==name: user = mem
+                    if mem.name == name:
+                        user = mem
                 return user, team
         return Professor(name), None
 
@@ -110,14 +112,29 @@ class LoginWindow(QMainWindow, QWidget, form_login_window):
         if not name: msg.information(self, "Login failed", "이름을 입력해주세요.")
         elif name in users:
             if pw == users[name]["pw"]:
-                msg.information(self, "Login success", f"{name}님, 환영합니다.")
-
-                self.windowclass = WindowClass(self.logIn(name))
-                self.windowclass.show()
-                self.hide()
+                if self.type == "student":
+                    if str(type(self.logIn(name)[0])) == "<class 'models.User.Student'>":
+                        msg.information(self, "Login success", f"{name}님, 환영합니다.")
+                        self.hide()
+                        self.windowclass = StudentWindow(self.logIn(name))
+                    else:
+                        msg = QMessageBox()
+                        msg.information(self, "Access denied", "접근 권한이 없습니다.")
+                else:
+                    if str(type(self.logIn(name)[0])) == "<class 'models.User.Professor'>":
+                        msg.information(self, "Login success", f"{name}님, 환영합니다.")
+                        self.hide()
+                        self.windowclass = TeacherWindow()
+                    else:
+                        msg = QMessageBox()
+                        msg.information(self, "Access denied", "접근 권한이 없습니다.")
 
             else: msg.information(self, "Login failed", "비밀번호를 확인해주세요.")
         else: msg.information(self, "Login failed", "존재하지 않는 사용자입니다.")
+
+    def btn_cancel_clicked(self):
+        self.close()
+        self.start = StartWindow()
 
 
 # 접속 화면
@@ -196,6 +213,10 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def add_time(self, time):
         self.name.addTime(time)
+
+    def logout(self):
+        self.close()
+        self.login = StartWindow()
 
 
 # 학습자: 1. 시간표 등록 화면
@@ -1054,6 +1075,10 @@ class TeacherWindow(QDialog, QWidget, form_teacher_window):
         self.contribution = TeacherContributionWindow()
         self.contribution.exec()
         self.show()
+
+    def logout(self):
+        self.close()
+        self.login = StartWindow()
 
 
 # 교수자: 1. 순위 확인 화면

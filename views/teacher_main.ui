@@ -73,6 +73,19 @@
     <string>점수 부여</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_4">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>370</y>
+     <width>150</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>로그아웃</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -124,10 +137,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>logout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>318</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>409</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>btn_main_to_attendance()</slot>
   <slot>btn_main_to_ranking()</slot>
   <slot>btn_main_to_contribution()</slot>
+  <slot>logout()</slot>
  </slots>
 </ui>
