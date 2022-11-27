@@ -213,6 +213,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         self.name.addTime(time)
 
     def logout(self):
+        self.team.membersClass = []
         self.close()
         self.login = StartWindow()
 
@@ -1075,6 +1076,7 @@ class TeacherWindow(QDialog, QWidget, form_teacher_window):
         self.show()
 
     def logout(self):
+        self.team.membersClass = []
         self.close()
         self.login = StartWindow()
 
