@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>480</height>
+    <height>548</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,34 @@
   <widget class="QCalendarWidget" name="calendarWidget">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>100</y>
-     <width>224</width>
-     <height>173</height>
+     <x>60</x>
+     <y>20</y>
+     <width>531</width>
+     <height>481</height>
     </rect>
    </property>
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>calendarWidget</sender>
+   <signal>clicked(QDate)</signal>
+   <receiver>Dialog</receiver>
+   <slot>date_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>183</x>
+     <y>90</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>50</x>
+     <y>80</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>date_clicked()</slot>
+ </slots>
 </ui>

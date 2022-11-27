@@ -5,12 +5,14 @@ import random
 
 from PyQt6.QtWidgets import *
 from PyQt6 import uic, QtGui
+from PyQt6.QtCore import Qt, QDate
 from collections import defaultdict
 import numpy as np
 import pandas as pd
 
 from models.User import Student, Professor
 from models.Group import Team
+from models.Meetings import Meeting
 from views.resources import background_rc
 
 global N, count
@@ -52,6 +54,9 @@ form_team_ranking_window = uic.loadUiType(form_team_ranking)[0]
 
 form_attendance = resource_path('./views/student_attendance.ui')
 form_attendance_window = uic.loadUiType(form_attendance)[0]
+
+form_meeting_list = resource_path('./views/meeting_list.ui')
+form_meeting_list_window = uic.loadUiType(form_meeting_list)[0]
 
 form_leader_contribution = resource_path('./views/leader_list.ui')
 form_leader_contribution_window = uic.loadUiType(form_leader_contribution)[0]
@@ -220,7 +225,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_attendance(self):
         self.hide()
-        self.attendance = AttendanceWindow()
+        self.attendance = AttendanceWindow(self.info)
         self.attendance.exec()
         self.show()
 
@@ -1077,18 +1082,50 @@ class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
             self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
 
 
-# 학습자: 4. 출석 화면
+# 학습자: 4. 회의 목록
 class AttendanceWindow(QDialog, QWidget, form_attendance_window):
-    def __init__(self):
+    def __init__(self, info):
         super(AttendanceWindow, self).__init__()
         self.init_ui()
         self.show()
+        self.info = info
+        self.user, self.team = info
 
     def init_ui(self):
         self.setupUi(self)
 
+    def date_clicked(self):
+        date = self.calendarWidget.selectedDate()
+        date = date.toString("yyyyMMdd")
+        
+
+        self.hide()
+        self.ranking = MeetingListWindow(self.info, date)
+        self.ranking.exec()
+        self.show()
+
+
     def btn_attendance_to_main(self):
         self.close()
+
+
+class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
+    def __init__(self, info, date):
+        super(MeetingListWindow, self).__init__()
+        self.init_ui()
+        self.show()
+        self.info = info
+        self.user, self.team = info
+        self.date = date
+        meetings = Meeting(self.team.teamNum)
+        meeting = meetings.getTeamMeeting(self.date)
+
+        self.label_meeting_date.setText(self.date)
+        self.meeting_memo.setPlainText(meeting["memo"])
+
+    def init_ui(self):
+        self.setupUi(self)
+        
 
 
 # 학습자: 5. 기여도 화면
