@@ -53,6 +53,9 @@ form_show_window = uic.loadUiType(form_show)[0]
 form_ranking = resource_path('./views/student_ranking.ui')
 form_ranking_window = uic.loadUiType(form_ranking)[0]
 
+form_person_ranking = resource_path('./views/person_ranking.ui')
+form_person_ranking_window = uic.loadUiType(form_person_ranking)[0]
+
 form_team_ranking = resource_path('./views/team_ranking.ui')
 form_team_ranking_window = uic.loadUiType(form_team_ranking)[0]
 
@@ -1070,6 +1073,8 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
 
     def person_ranking(self):
         self.hide()
+        self.person_ranking = PersonRankingWindow(self.team)
+        self.person_ranking.exec()
         self.close()
 
     def team_ranking(self):
@@ -1077,6 +1082,40 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
         self.team_ranking = TeamRankingWindow(self.team)
         self.team_ranking.exec()
         self.close()
+
+
+class PersonRankingWindow(QDialog, QWidget, form_person_ranking_window):
+    def __init__(self, team):
+        super(PersonRankingWindow, self).__init__()
+        self.team = team
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+
+        with open(f"./databases/meetings.json") as f:
+            attendance = json.load(f)
+
+        with open(f"./databases/groups.json") as f:
+            importance = json.load(f)
+
+        for i in range(len(self.team.membersClass)):
+            attend_score = 0
+            for j in attendance[self.team.teamNum]:
+                if self.team.membersClass[i].name in attendance[self.team.teamNum][j]['attendant']:
+                    attend_score += 1
+
+            import_score = 0
+            for j in range(len(importance[self.team.teamNum]["todolist"])):
+                if importance[self.team.teamNum]["todolist"][j][2] == self.team.membersClass[i].name and \
+                        importance[self.team.teamNum]["todolist"][j][3] == "o":
+                    import_score += int(importance[self.team.teamNum]["todolist"][j][1])
+
+            self.tableWidget.setItem(i, 0, QTableWidgetItem(self.team.membersClass[i].name))
+            self.tableWidget.setItem(i, 1, QTableWidgetItem(str(attend_score)))
+            self.tableWidget.setItem(i, 2, QTableWidgetItem(str(import_score)))
+            self.tableWidget.setItem(i, 3, QTableWidgetItem(str(attend_score + import_score)))
 
 
 # 학습자: 3. 순위 확인 화면

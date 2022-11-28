@@ -9,7 +9,9 @@
             "화 21:00 ~ 22:00",
             "화 20:00 ~ 21:00"
         ],
-        "leader": 1
+        "leader": 1,
+        "attendance": 0,
+        "importance": 0
     },
     "손동민": {
         "pw": "123",
@@ -18,7 +20,9 @@
         "timeTable": [
             "수 23:00 ~ 24:00"
         ],
-        "leader": 0
+        "leader": 0,
+        "attendance": 0,
+        "importance": 0
     },
     "이준호": {
         "pw": "123",
@@ -31,7 +35,9 @@
             "목 23:00 ~ 24:00",
             "금 23:00 ~ 24:00"
         ],
-        "leader": 0
+        "leader": 0,
+        "attendance": 0,
+        "importance": 0
     },
     "김태건": {
         "pw": "123",
@@ -47,7 +53,9 @@
             "월 22:00 ~ 23:00",
             "월 23:00 ~ 24:00"
         ],
-        "leader": 1
+        "leader": 0,
+        "attendance": 0,
+        "importance": 0
     },
     "professor": {
         "pw": "123",
