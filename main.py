@@ -211,51 +211,39 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         global weeks
 
         self.setupUi(self)
-        self.label_2.setText(f"{weeks}주차")
-        self.label_3.setText(f"Student : {self.name.name}")
-        self.label_4.setText(f"Team : {self.team.name}")
+        self.table_info.setItem(-1, 1, QTableWidgetItem(f"{weeks}주차"))
+        self.table_info.setItem(0, 1, QTableWidgetItem(f"{self.name.name}"))
+        self.table_info.setItem(1, 1, QTableWidgetItem(f"{self.team.name}"))
 
     def btn_main_to_timetable(self):
-        self.hide()
         self.timetable = TimetableWindow(self.info)
         self.timetable.exec()
         self.team.matchTime()
-        self.show()
 
     def btn_main_to_show(self):
-        self.hide()
         self.show_time_table = TimetableListWindow(self.info)
         self.show_time_table.exec()
-        self.show()
 
     def btn_main_to_ranking(self):
-        self.hide()
         self.ranking = RankingWindow(self.team)
         self.ranking.exec()
-        self.show()
 
     def btn_main_to_attendance(self):
-        self.hide()
         self.attendance = MeetingMainWindow(self.info)
         self.attendance.exec()
-        self.show()
 
     def btn_main_to_contribution(self):
         with open(f"./databases/users.json") as f:
             users = json.load(f)
-        self.hide()
         if users[self.name.name]["leader"] == 1:
             self.contribution = LeaderContributionWindow(self.team)
         else:
             self.contribution = MemberContributionWindow(self.team)
         self.contribution.exec()
-        self.show()
 
     def btn_main_to_random(self):
-        self.hide()
         self.set_random = RandomWindow(self.team)
         self.set_random.exec()
-        self.show()
 
     def add_time(self, time):
         self.name.addTime(time)
