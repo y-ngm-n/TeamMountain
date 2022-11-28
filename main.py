@@ -1292,6 +1292,17 @@ class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window
             if groups[self.team.teamNum]["todolist"][i][3] == "o":
                 check[i].setChecked(True)
 
+        self.comboBox.addItem(None)
+        self.comboBox_2.addItem(None)
+        self.comboBox_3.addItem(None)
+        self.comboBox_4.addItem(None)
+        self.comboBox_5.addItem(None)
+        self.comboBox_6.addItem(None)
+        self.comboBox_7.addItem(None)
+        self.comboBox_8.addItem(None)
+        self.comboBox_9.addItem(None)
+        self.comboBox_10.addItem(None)
+
         for name in self.team.membersName:
             self.comboBox.addItem(name)
             self.comboBox_2.addItem(name)
