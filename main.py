@@ -5,9 +5,11 @@ import sys
 import json
 import random
 
+
 from PyQt6.QtWidgets import *
 from PyQt6 import uic, QtGui
-from PyQt6.QtCore import Qt, QDate
+from PyQt6.QtGui import *
+from PyQt6.QtCore import QDate
 from collections import defaultdict
 import numpy as np
 import pandas as pd
@@ -1095,17 +1097,27 @@ class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
             self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
 
 
-# 학습자: 4. 회의 목록
+# 학습자: 4. 회의 목록 달력
 class AttendanceWindow(QDialog, QWidget, form_attendance_window):
     def __init__(self, info):
         super(AttendanceWindow, self).__init__()
-        self.init_ui()
-        self.show()
         self.info = info
         self.user, self.team = info
+        self.meet = Meeting(self.team.teamNum)
+        self.meetings = self.meet.getTeamMeetings()
+        color = QColor(0, 100, 0)
+        self.fm = QTextCharFormat()
+        self.fm.setBackground(color)
+        self.init_ui()
+        self.show()
+        for date in self.meetings:
+            date = QDate.fromString(date, "yyyyMMdd")
+            self.calendarWidget.setDateTextFormat(date, self.fm)
+
 
     def init_ui(self):
         self.setupUi(self)
+
 
     def date_clicked(self):
         date = self.calendarWidget.selectedDate()
@@ -1113,13 +1125,13 @@ class AttendanceWindow(QDialog, QWidget, form_attendance_window):
         
         self.meeting = MeetingListWindow(self.info, date)
         self.meeting.exec()
-
+        self.close()
 
     def btn_attendance_to_main(self):
         self.close()
 
 
-
+# 학습자: 4-1. 해당 날짜 회의 정보
 class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
     def __init__(self, info, date):
         super(MeetingListWindow, self).__init__()
@@ -1127,6 +1139,7 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
         self.show()
         self.info = info
         self.user, self.team = info
+        self.meeting = None
         self.date = date
         self.config()
 
@@ -1134,29 +1147,40 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
         self.setupUi(self)
 
     def config(self):
-        self.meetings = Meeting(self.team.teamNum)
-
-        if self.date not in self.meetings.getTeamMeetings():
-            self.meetings.addMeeting(self.date)
-            
-        self.meeting = self.meetings.getTeamMeeting(self.date)
         self.label_meeting_date.setText(self.date)
-        self.meeting_memo.setPlainText(self.meeting["memo"])
-
         members = self.team.membersName
-        attendant = self.meeting["attendant"]
         self.table_attendant.setRowCount(len(members))
         for i in range(len(members)):
             self.table_attendant.setItem(i, 0, QTableWidgetItem(members[i]))
             self.table_attendant.setCellWidget(i, 1, QCheckBox())
-            checkbox = self.table_attendant.cellWidget(i, 1)
-            if members[i] in attendant: checkbox.toggle()
+
+        self.meetings = Meeting(self.team.teamNum)
+
+        if self.date in self.meetings.getTeamMeetings():
+            self.meeting = self.meetings.getTeamMeeting(self.date)
+            self.meeting_memo.setPlainText(self.meeting["memo"])
+
+            attendant = self.meeting["attendant"]
+            for i in range(len(members)):
+                checkbox = self.table_attendant.cellWidget(i, 1)
+                if members[i] in attendant: checkbox.toggle()
 
 
     def btn_previous_clicked(self):
+        self.calendar = AttendanceWindow(self.info)
+        self.calendar.exec()
+        self.close()
+
+    def btn_delete_clicked(self):
+        if self.meeting:
+            self.meetings.deleteMeeting(self.date)
+        self.calendar = AttendanceWindow(self.info)
+        self.calendar.exec()
         self.close()
 
     def btn_save_clicked(self):
+        if self.date not in self.meetings.getTeamMeetings():
+            self.meetings.addMeeting(self.date)
         attendant = []
         members = self.team.membersName
         for i in range(len(members)):
@@ -1166,6 +1190,9 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
         
         memo = self.meeting_memo.toPlainText()
         self.meetings.setMeetingMemo(self.date, memo)
+
+        self.calendar = AttendanceWindow(self.info)
+        self.calendar.exec()
         self.close()
         
 

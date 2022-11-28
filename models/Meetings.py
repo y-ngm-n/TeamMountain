@@ -10,9 +10,15 @@ class Meeting:
 
 
     def getAllMeetings(self):
+        with open(f"./databases/meetings.json", encoding='UTF-8') as f:
+            self.meetings = json.load(f)
+            self.meeting = self.meetings[self.team]
         return self.meetings
 
     def getTeamMeetings(self):
+        with open(f"./databases/meetings.json", encoding='UTF-8') as f:
+            self.meetings = json.load(f)
+            self.meeting = self.meetings[self.team]
         return self.meeting
 
     def getTeamMeeting(self, date):
@@ -21,6 +27,12 @@ class Meeting:
 
     def addMeeting(self, date):
         self.meeting[date] = { "attendant": [], "memo": "" }
+        with open(f"./databases/meetings.json", "w", encoding='UTF-8') as f:
+            json.dump(self.meetings, f, indent=4, ensure_ascii=False)
+
+
+    def deleteMeeting(self, date):
+        self.meeting.pop(date)
         with open(f"./databases/meetings.json", "w", encoding='UTF-8') as f:
             json.dump(self.meetings, f, indent=4, ensure_ascii=False)
 

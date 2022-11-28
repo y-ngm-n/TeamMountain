@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
-    <height>796</height>
+    <width>566</width>
+    <height>677</height>
    </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -39,25 +42,20 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>430</y>
+     <y>290</y>
      <width>381</width>
      <height>251</height>
     </rect>
    </property>
    <property name="plainText">
-    <string>
-
-
-
-
-</string>
+    <string/>
    </property>
   </widget>
   <widget class="QTableWidget" name="table_attendant">
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>90</y>
+     <y>20</y>
      <width>211</width>
      <height>251</height>
     </rect>
@@ -76,13 +74,13 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>700</y>
-     <width>228</width>
+     <x>90</x>
+     <y>580</y>
+     <width>361</width>
      <height>32</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QPushButton" name="pushButton">
       <property name="text">
@@ -97,11 +95,34 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>삭제</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
  <resources/>
  <connections>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>btn_save_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>329</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>473</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
@@ -109,8 +130,8 @@
    <slot>btn_previous_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>375</y>
+     <x>143</x>
+     <y>580</y>
     </hint>
     <hint type="destinationlabel">
      <x>91</x>
@@ -119,18 +140,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>pushButton_3</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>btn_save_clicked()</slot>
+   <slot>btn_delete_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>309</x>
-     <y>371</y>
+     <x>421</x>
+     <y>599</y>
     </hint>
     <hint type="destinationlabel">
-     <x>473</x>
-     <y>369</y>
+     <x>494</x>
+     <y>590</y>
     </hint>
    </hints>
   </connection>
@@ -138,5 +159,6 @@
  <slots>
   <slot>btn_previous_clicked()</slot>
   <slot>btn_save_clicked()</slot>
+  <slot>btn_delete_clicked()</slot>
  </slots>
 </ui>

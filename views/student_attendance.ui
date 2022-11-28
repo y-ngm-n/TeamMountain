@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>548</height>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,6 +21,42 @@
      <width>531</width>
      <height>481</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Nanum Gothic</family>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="selectionMode">
+    <enum>QCalendarWidget::SingleSelection</enum>
+   </property>
+   <property name="horizontalHeaderFormat">
+    <enum>QCalendarWidget::ShortDayNames</enum>
+   </property>
+   <property name="verticalHeaderFormat">
+    <enum>QCalendarWidget::NoVerticalHeader</enum>
+   </property>
+   <property name="navigationBarVisible">
+    <bool>true</bool>
+   </property>
+   <property name="dateEditEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>530</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>이전</string>
    </property>
   </widget>
  </widget>
@@ -42,8 +78,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_attendance_to_main()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>538</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>466</x>
+     <y>539</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>date_clicked()</slot>
+  <slot>btn_attendance_to_main()</slot>
  </slots>
 </ui>
