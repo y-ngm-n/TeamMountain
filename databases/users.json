@@ -70,5 +70,284 @@
         "pw": "123",
         "type": "professor",
         "group": "0"
+    },
+    "박정수": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team1",
+        "leader": 1
+    },
+    "안정후": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team1",
+        "leader": 0
+    },
+    "윤태현": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team1",
+        "leader": 0
+    },
+    "박민성": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team2",
+        "leader": 0
+    },
+    "양동석": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team2",
+        "leader": 0
+    },
+    "윤세린": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team2",
+        "leader": 1
+    },
+    "정일묵": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team2",
+        "leader": 0
+    },
+    "김지윤": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team3",
+        "leader": 0
+    },
+    "김회민": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team3",
+        "leader": 1
+    },
+    "이재림": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team3",
+        "leader": 0
+    },
+    "임혜림": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team3",
+        "leader": 0
+    },
+    "송준영": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team4",
+        "leader": 0
+    },
+    "이지윤": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team4",
+        "leader": 0
+    },
+    "정은희": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team4",
+        "leader": 0
+    },
+    "지윤호": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team4",
+        "leader": 1
+    },
+    "권민선": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team6",
+        "leader": 0
+    },
+    "최예준": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team6",
+        "leader": 0
+    },
+    "하서현": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team6",
+        "leader": 0
+    },
+    "한우석": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team6",
+        "leader": 1
+    },
+    "김민서": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team7",
+        "leader": 1
+    },
+    "엄지우": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team7",
+        "leader": 0
+    },
+    "윤상진": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team7",
+        "leader": 0
+    },
+    "전혜진": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team7",
+        "leader": 0
+    },
+    "송지원": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team8",
+        "leader": 0
+    },
+    "윤정연": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team8",
+        "leader": 1
+    },
+    "이수현": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team8",
+        "leader": 0
+    },
+    "한솔": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team8",
+        "leader": 0
+    },
+    "강서현": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team9",
+        "leader": 0
+    },
+    "김소미": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team9",
+        "leader": 0
+    },
+    "김은서": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team9",
+        "leader": 1
+    },
+    "이채영": {
+        "pw": "123",
+        "type": "student",
+        "timeTable": [],
+        "attendance": 0,
+        "importance": 0,
+        "group": "team9",
+        "leader": 0
     }
 }
