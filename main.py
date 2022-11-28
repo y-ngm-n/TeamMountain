@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*- 
+
 import os
 import sys
 import json
@@ -1109,15 +1111,13 @@ class AttendanceWindow(QDialog, QWidget, form_attendance_window):
         date = self.calendarWidget.selectedDate()
         date = date.toString("yyyyMMdd")
         
-
-        self.hide()
-        self.ranking = MeetingListWindow(self.info, date)
-        self.ranking.exec()
-        self.show()
+        self.meeting = MeetingListWindow(self.info, date)
+        self.meeting.exec()
 
 
     def btn_attendance_to_main(self):
         self.close()
+
 
 
 class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
@@ -1128,14 +1128,45 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
         self.info = info
         self.user, self.team = info
         self.date = date
-        meetings = Meeting(self.team.teamNum)
-        meeting = meetings.getTeamMeeting(self.date)
-
-        self.label_meeting_date.setText(self.date)
-        self.meeting_memo.setPlainText(meeting["memo"])
+        self.config()
 
     def init_ui(self):
         self.setupUi(self)
+
+    def config(self):
+        self.meetings = Meeting(self.team.teamNum)
+
+        if self.date not in self.meetings.getTeamMeetings():
+            self.meetings.addMeeting(self.date)
+            
+        self.meeting = self.meetings.getTeamMeeting(self.date)
+        self.label_meeting_date.setText(self.date)
+        self.meeting_memo.setPlainText(self.meeting["memo"])
+
+        members = self.team.membersName
+        attendant = self.meeting["attendant"]
+        self.table_attendant.setRowCount(len(members))
+        for i in range(len(members)):
+            self.table_attendant.setItem(i, 0, QTableWidgetItem(members[i]))
+            self.table_attendant.setCellWidget(i, 1, QCheckBox())
+            checkbox = self.table_attendant.cellWidget(i, 1)
+            if members[i] in attendant: checkbox.toggle()
+
+
+    def btn_previous_clicked(self):
+        self.close()
+
+    def btn_save_clicked(self):
+        attendant = []
+        members = self.team.membersName
+        for i in range(len(members)):
+            checkbox = self.table_attendant.cellWidget(i, 1)
+            if checkbox.isChecked(): attendant.append(members[i])
+        self.meetings.setMeetingAllAttendant(self.date, attendant)
+        
+        memo = self.meeting_memo.toPlainText()
+        self.meetings.setMeetingMemo(self.date, memo)
+        self.close()
         
 
 

@@ -32,6 +32,11 @@ class Meeting:
         with open(f"./databases/meetings.json", "w", encoding='UTF-8') as f:
             json.dump(self.meetings, f, indent=4, ensure_ascii=False)
 
+    def setMeetingAllAttendant(self, date, attendant):
+        self.meeting[date]["attendant"] = attendant
+        with open(f"./databases/meetings.json", "w", encoding='UTF-8') as f:
+            json.dump(self.meetings, f, indent=4, ensure_ascii=False)
+
     # def setMeetingName(self, date, name):
     #     self.meeting[date]["name"] = name
     #     with open(f"./databases/meetings.json", "w", encoding='UTF-8') as f:
