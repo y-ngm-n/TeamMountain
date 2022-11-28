@@ -59,8 +59,8 @@ form_person_ranking_window = uic.loadUiType(form_person_ranking)[0]
 form_team_ranking = resource_path('./views/team_ranking.ui')
 form_team_ranking_window = uic.loadUiType(form_team_ranking)[0]
 
-form_attendance = resource_path('./views/student_attendance.ui')
-form_attendance_window = uic.loadUiType(form_attendance)[0]
+form_meeting_main = resource_path('./views/student_attendance.ui')
+form_meeting_main_window = uic.loadUiType(form_meeting_main)[0]
 
 form_meeting_list = resource_path('./views/meeting_list.ui')
 form_meeting_list_window = uic.loadUiType(form_meeting_list)[0]
@@ -238,7 +238,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_attendance(self):
         self.hide()
-        self.attendance = AttendanceWindow(self.info)
+        self.attendance = MeetingMainWindow(self.info)
         self.attendance.exec()
         self.show()
 
@@ -1058,6 +1058,7 @@ class ShowWindow(QDialog, QWidget, form_show_window):
                     self.tableWidget.item(i, j).setBackground(QtGui.QColor(230, 0, 0))
 
 
+# 학습자: 3. 순위 확인 화면
 class RankingWindow(QDialog, QWidget, form_ranking_window):
     def __init__(self, team):
         super(RankingWindow, self).__init__()
@@ -1084,6 +1085,7 @@ class RankingWindow(QDialog, QWidget, form_ranking_window):
         self.close()
 
 
+# 학습자: 3-1. 학습자 기여도 화면
 class PersonRankingWindow(QDialog, QWidget, form_person_ranking_window):
     def __init__(self, team):
         super(PersonRankingWindow, self).__init__()
@@ -1118,7 +1120,7 @@ class PersonRankingWindow(QDialog, QWidget, form_person_ranking_window):
             self.tableWidget.setItem(i, 3, QTableWidgetItem(str(attend_score + import_score)))
 
 
-# 학습자: 3. 순위 확인 화면
+# 학습자: 3-2. 팀 순위 화면
 class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
     def __init__(self, team):
         super(TeamRankingWindow, self).__init__()
@@ -1137,9 +1139,9 @@ class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
 
 
 # 학습자: 4. 회의 목록 달력
-class AttendanceWindow(QDialog, QWidget, form_attendance_window):
+class MeetingMainWindow(QDialog, QWidget, form_meeting_main_window):
     def __init__(self, info):
-        super(AttendanceWindow, self).__init__()
+        super(MeetingMainWindow, self).__init__()
         self.info = info
         self.user, self.team = info
         self.meet = Meeting(self.team.teamNum)
@@ -1206,14 +1208,14 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
 
 
     def btn_previous_clicked(self):
-        self.calendar = AttendanceWindow(self.info)
+        self.calendar = MeetingMainWindow(self.info)
         self.calendar.exec()
         self.close()
 
     def btn_delete_clicked(self):
         if self.meeting:
             self.meetings.deleteMeeting(self.date)
-        self.calendar = AttendanceWindow(self.info)
+        self.calendar = MeetingMainWindow(self.info)
         self.calendar.exec()
         self.close()
 
@@ -1230,12 +1232,12 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
         memo = self.meeting_memo.toPlainText()
         self.meetings.setMeetingMemo(self.date, memo)
 
-        self.calendar = AttendanceWindow(self.info)
+        self.calendar = MeetingMainWindow(self.info)
         self.calendar.exec()
         self.close()
 
 
-# 학습자: 5. 기여도 화면
+# 학습자: 5-1. 조장 todo 리스트 화면
 class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window):
     def __init__(self, team):
         super(LeaderContributionWindow, self).__init__()
@@ -1308,6 +1310,7 @@ class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window
         self.tableWidget.update()
 
 
+# 학습자: 5-2. todo todo 리스트 화면
 class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window):
     def __init__(self, team):
         super(MemberContributionWindow, self).__init__()
@@ -1347,6 +1350,7 @@ class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window
             json.dump(groups, f, indent=4, ensure_ascii=False)
 
         self.close()
+
 
 
 class addToDoWindow(QDialog, QWidget, form_todo_window):
@@ -1588,9 +1592,9 @@ class TeacherScoreWindow(QDialog, QWidget, form_teacher_score_window):
         self.close()
 
 # 교수자: 2. 출석 화면
-class TeacherAttendanceWindow(QDialog, QWidget, form_teacher_attendance_window):
+class TeacherMeetingMainWindow(QDialog, QWidget, form_teacher_attendance_window):
     def __init__(self):
-        super(TeacherAttendanceWindow, self).__init__()
+        super(TeacherMeetingMainWindow, self).__init__()
         self.init_ui()
         self.show()
 
