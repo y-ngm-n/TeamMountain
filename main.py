@@ -1661,7 +1661,6 @@ class TeacherMeetingMainWindow(QDialog, QWidget, form_teacher_meeting_window):
         self.close()
 
 
-# 학습자: 4-1. 해당 날짜 회의 정보
 class TeacherMeetingListWindow(QDialog, QWidget, form_teacher_list_window):
     def __init__(self, team, date):
         super(TeacherMeetingListWindow, self).__init__()
