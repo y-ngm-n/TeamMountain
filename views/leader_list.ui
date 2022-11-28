@@ -150,7 +150,7 @@
    <property name="geometry">
     <rect>
      <x>303</x>
-     <y>127</y>
+     <y>97</y>
      <width>87</width>
      <height>20</height>
     </rect>
@@ -163,7 +163,7 @@
    <property name="geometry">
     <rect>
      <x>303</x>
-     <y>97</y>
+     <y>127</y>
      <width>87</width>
      <height>20</height>
     </rect>
@@ -285,6 +285,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="currentText">
+    <string/>
+   </property>
   </widget>
   <widget class="QComboBox" name="comboBox_2">
    <property name="geometry">
@@ -380,22 +383,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>181</x>
-     <y>385</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>181</x>
-     <y>204</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_3</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
@@ -427,8 +414,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_contribution_to_main()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>388</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>82</x>
+     <y>388</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>btn_add()</slot>
+  <slot>btn_contribution_to_main()</slot>
  </slots>
 </ui>

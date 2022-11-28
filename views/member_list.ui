@@ -140,7 +140,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="checked">
     <bool>false</bool>
@@ -153,22 +153,6 @@
    <property name="geometry">
     <rect>
      <x>303</x>
-     <y>127</y>
-     <width>87</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="checkBox_3">
-   <property name="geometry">
-    <rect>
-     <x>303</x>
      <y>97</y>
      <width>87</width>
      <height>20</height>
@@ -178,7 +162,23 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_3">
+   <property name="geometry">
+    <rect>
+     <x>303</x>
+     <y>129</y>
+     <width>87</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_4">
@@ -194,7 +194,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_5">
@@ -210,7 +210,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_6">
@@ -226,7 +226,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_7">
@@ -242,7 +242,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_8">
@@ -258,7 +258,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_9">
@@ -274,7 +274,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_10">
@@ -290,7 +290,7 @@
     <string/>
    </property>
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
@@ -300,17 +300,20 @@
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
-   <slot>close()</slot>
+   <slot>btn_contribution_to_main()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>181</x>
-     <y>385</y>
+     <x>179</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>204</y>
+     <x>270</x>
+     <y>387</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>btn_contribution_to_main()</slot>
+ </slots>
 </ui>

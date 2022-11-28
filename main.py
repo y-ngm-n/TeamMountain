@@ -1252,6 +1252,79 @@ class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window
         self.tableWidget.update()
 
 
+# 학습자: 5. 기여도 화면
+class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window):
+    def __init__(self, team):
+        super(LeaderContributionWindow, self).__init__()
+        self.team = team
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+
+        combo = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.comboBox_5, self.comboBox_6,
+                 self.comboBox_7, self.comboBox_8, self.comboBox_9, self.comboBox_10]
+        check = [self.checkBox, self.checkBox_2, self.checkBox_3, self.checkBox_4, self.checkBox_5, self.checkBox_6,
+                 self.checkBox_7, self.checkBox_8, self.checkBox_9, self.checkBox_10]
+
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        for i in range(len(groups[self.team.teamNum]["todolist"])):
+            for j in range(2):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(groups[self.team.teamNum]["todolist"][i][j]))
+            combo[i].addItem(groups[self.team.teamNum]["todolist"][i][2])
+            if groups[self.team.teamNum]["todolist"][i][3] == "o":
+                check[i].setChecked(True)
+
+        for name in self.team.membersName:
+            self.comboBox.addItem(name)
+            self.comboBox_2.addItem(name)
+            self.comboBox_3.addItem(name)
+            self.comboBox_4.addItem(name)
+            self.comboBox_5.addItem(name)
+            self.comboBox_6.addItem(name)
+            self.comboBox_7.addItem(name)
+            self.comboBox_8.addItem(name)
+            self.comboBox_9.addItem(name)
+            self.comboBox_10.addItem(name)
+
+    def btn_contribution_to_main(self):
+        combo = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.comboBox_5, self.comboBox_6,
+                 self.comboBox_7, self.comboBox_8, self.comboBox_9, self.comboBox_10]
+        check = [self.checkBox, self.checkBox_2, self.checkBox_3, self.checkBox_4, self.checkBox_5, self.checkBox_6,
+                 self.checkBox_7, self.checkBox_8, self.checkBox_9, self.checkBox_10]
+
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        for i in range(len(groups[self.team.teamNum]["todolist"])):
+            groups[self.team.teamNum]["todolist"][i][2] = combo[i].currentText()
+            if check[i].isChecked() != 0:
+                groups[self.team.teamNum]["todolist"][i][3] = "o"
+            else:
+                groups[self.team.teamNum]["todolist"][i][3] = "x"
+
+        with open(f"./databases/groups.json", "w", encoding="utf-8") as f:
+            json.dump(groups, f, indent=4, ensure_ascii=False)
+
+        self.close()
+
+    def btn_add(self):
+        self.add = addToDoWindow(self.team)
+        self.add.exec()
+
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        for i in range(len(groups[self.team.teamNum]["todolist"])):
+            for j in range(3):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(groups[self.team.teamNum]["todolist"][i][j]))
+
+        self.tableWidget.update()
+
+
 class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window):
     def __init__(self, team):
         super(MemberContributionWindow, self).__init__()
@@ -1262,13 +1335,34 @@ class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window
     def init_ui(self):
         self.setupUi(self)
 
-        column = ['todo', '중요도', '사람', '완료여부']
+        check = [self.checkBox, self.checkBox_2, self.checkBox_3, self.checkBox_4, self.checkBox_5, self.checkBox_6,
+                 self.checkBox_7, self.checkBox_8, self.checkBox_9, self.checkBox_10]
 
-        for i in range(len(self.team.todoList)):
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        for i in range(len(groups[self.team.teamNum]["todolist"])):
             for j in range(3):
-                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
+                self.tableWidget.setItem(i, j, QTableWidgetItem(groups[self.team.teamNum]["todolist"][i][j]))
+            if groups[self.team.teamNum]["todolist"][i][3] == "o":
+                check[i].setChecked(True)
 
     def btn_contribution_to_main(self):
+        check = [self.checkBox, self.checkBox_2, self.checkBox_3, self.checkBox_4, self.checkBox_5, self.checkBox_6,
+                 self.checkBox_7, self.checkBox_8, self.checkBox_9, self.checkBox_10]
+
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        for i in range(len(groups[self.team.teamNum]["todolist"])):
+            if check[i].isChecked() != 0:
+                groups[self.team.teamNum]["todolist"][i][3] = "o"
+            else:
+                groups[self.team.teamNum]["todolist"][i][3] = "x"
+
+        with open(f"./databases/groups.json", "w", encoding="utf-8") as f:
+            json.dump(groups, f, indent=4, ensure_ascii=False)
+
         self.close()
 
 
@@ -1283,9 +1377,16 @@ class addToDoWindow(QDialog, QWidget, form_todo_window):
         self.setupUi(self)
 
     def btn_add_to_list(self):
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
         todo = self.lineEdit.text()
         importance = self.lineEdit_2.text()
-        self.team.addTodoList(todo, importance)
+
+        groups[self.team.teamNum]["todolist"].append([todo, importance, None, 'x'])
+        with open(f"./databases/groups.json", "w", encoding="utf-8") as f:
+            json.dump(groups, f, indent=4, ensure_ascii=False)
+
         self.close()
 
 
