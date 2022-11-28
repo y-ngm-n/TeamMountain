@@ -1602,6 +1602,7 @@ class TeacherScoreWindow(QDialog, QWidget, form_teacher_score_window):
 
         self.close()
 
+
 # 교수자: 2. 출석 화면
 class TeacherMeetingMainWindow(QDialog, QWidget, form_teacher_attendance_window):
     def __init__(self):
