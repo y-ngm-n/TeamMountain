@@ -56,22 +56,40 @@
     <rect>
      <x>160</x>
      <y>20</y>
-     <width>211</width>
-     <height>251</height>
+     <width>202</width>
+     <height>240</height>
     </rect>
    </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::NoSelection</enum>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
    <column>
     <property name="text">
      <string>이름</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
     </property>
    </column>
    <column>
     <property name="text">
      <string>출석</string>
     </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
    </column>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>90</x>
