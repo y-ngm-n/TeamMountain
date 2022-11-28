@@ -1194,62 +1194,6 @@ class MeetingListWindow(QDialog, QWidget, form_meeting_list_window):
         self.calendar = AttendanceWindow(self.info)
         self.calendar.exec()
         self.close()
-        
-
-
-# 학습자: 5. 기여도 화면
-class LeaderContributionWindow(QDialog, QWidget, form_leader_contribution_window):
-    def __init__(self, team):
-        super(LeaderContributionWindow, self).__init__()
-        self.team = team
-        self.init_ui()
-        self.show()
-
-    def init_ui(self):
-        self.setupUi(self)
-
-        column = ['todo', '중요도', '사람', '완료여부']
-
-        for i in range(len(self.team.todoList)):
-            for j in range(3):
-                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
-
-        self.comboBox.addItem(None)
-        self.comboBox_2.addItem(None)
-        self.comboBox_3.addItem(None)
-        self.comboBox_4.addItem(None)
-        self.comboBox_5.addItem(None)
-        self.comboBox_6.addItem(None)
-        self.comboBox_7.addItem(None)
-        self.comboBox_8.addItem(None)
-        self.comboBox_9.addItem(None)
-        self.comboBox_10.addItem(None)
-
-        for name in self.team.membersName:
-            self.comboBox.addItem(name)
-            self.comboBox_2.addItem(name)
-            self.comboBox_3.addItem(name)
-            self.comboBox_4.addItem(name)
-            self.comboBox_5.addItem(name)
-            self.comboBox_6.addItem(name)
-            self.comboBox_7.addItem(name)
-            self.comboBox_8.addItem(name)
-            self.comboBox_9.addItem(name)
-            self.comboBox_10.addItem(name)
-
-    def btn_contribution_to_main(self):
-        self.close()
-
-    def btn_add(self):
-        self.add = addToDoWindow(self.team)
-        self.add.exec()
-
-        column = ['todo', '중요도', '사람', '완료여부']
-
-        for i in range(len(self.team.todoList)):
-            for j in range(3):
-                self.tableWidget.setItem(i, j, QTableWidgetItem(self.team.todoList.loc[i][column[j]]))
-        self.tableWidget.update()
 
 
 # 학습자: 5. 기여도 화면
