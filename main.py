@@ -66,6 +66,12 @@ form_meeting_main_window = uic.loadUiType(form_meeting_main)[0]
 form_meeting_list = resource_path('./views/meeting_list.ui')
 form_meeting_list_window = uic.loadUiType(form_meeting_list)[0]
 
+form_teacher_meeting = resource_path('./views/teacher_attendance.ui')
+form_teacher_meeting_window = uic.loadUiType(form_teacher_meeting)[0]
+
+form_teacher_list = resource_path('./views/teacher_meeting.ui')
+form_teacher_list_window = uic.loadUiType(form_teacher_list)[0]
+
 form_leader_contribution = resource_path('./views/leader_list.ui')
 form_leader_contribution_window = uic.loadUiType(form_leader_contribution)[0]
 
@@ -1046,8 +1052,6 @@ class TimetableListWindow(QDialog, QWidget, form_timetable_list_window):
         self.close()
 
 
-
-
 # 학습자: 2. 시간표 조회 화면
 class ShowWindow(QDialog, QWidget, form_show_window):
     def __init__(self, info):
@@ -1450,25 +1454,24 @@ class TeacherWindow(QDialog, QWidget, form_teacher_window):
         self.show()
 
     def btn_main_to_attendance(self):
-        self.attendance = TeacherTempWindow()
+        self.attendance = TeacherTempWindow("attendance")
         self.attendance.exec()
         self.show()
 
     def btn_main_to_contribution(self):
-        self.hide()
-        self.contribution = TeacherContributionWindow()
+        self.contribution = TeacherTempWindow("contribution")
         self.contribution.exec()
         self.show()
 
     def logout(self):
-        self.team.membersClass = []
         self.close()
         myWindow.show()
 
 
 class TeacherTempWindow(QDialog, QWidget, form_teacher_temp_window):
-    def __init__(self):
+    def __init__(self, menu):
         super(TeacherTempWindow, self).__init__()
+        self.menu = menu
         self.init_ui()
         self.show()
 
@@ -1476,7 +1479,15 @@ class TeacherTempWindow(QDialog, QWidget, form_teacher_temp_window):
         self.setupUi(self)
 
     def btn_team_number(self):
-        pass
+        global teamList
+
+        team = teamList[self.spinBox.value() - 1]
+        if self.menu == "attendance":
+            self.meeting = TeacherMeetingMainWindow(team)
+            self.close()
+        elif self.menu == "contribution":
+            self.contribution = TeacherContributionWindow(team)
+            self.close()
 
 
 # 교수자: 1. 점수 부여 화면
@@ -1620,34 +1631,108 @@ class TeacherScoreWindow(QDialog, QWidget, form_teacher_score_window):
         self.close()
 
 
-# 교수자: 2. 출석 화면
-class TeacherMeetingMainWindow(QDialog, QWidget, form_teacher_attendance_window):
-    def __init__(self):
+class TeacherMeetingMainWindow(QDialog, QWidget, form_teacher_meeting_window):
+    def __init__(self, team):
         super(TeacherMeetingMainWindow, self).__init__()
+        self.team = team
+        self.meet = Meeting(self.team.teamNum)
+        self.meetings = self.meet.getTeamMeetings()
+        color = QColor(0, 100, 0)
+        self.fm = QTextCharFormat()
+        self.fm.setBackground(color)
         self.init_ui()
         self.show()
+        for date in self.meetings:
+            date = QDate.fromString(date, "yyyyMMdd")
+            self.calendarWidget.setDateTextFormat(date, self.fm)
 
     def init_ui(self):
         self.setupUi(self)
+
+    def date_clicked(self):
+        date = self.calendarWidget.selectedDate()
+        date = date.toString("yyyyMMdd")
+
+        self.meeting = TeacherMeetingListWindow(self.team, date)
+        self.meeting.exec()
+        self.close()
 
     def btn_attendance_to_main(self):
         self.close()
 
 
+# 학습자: 4-1. 해당 날짜 회의 정보
+class TeacherMeetingListWindow(QDialog, QWidget, form_teacher_list_window):
+    def __init__(self, team, date):
+        super(TeacherMeetingListWindow, self).__init__()
+        self.init_ui()
+        self.show()
+        self.team = team
+        self.meeting = None
+        self.date = date
+        self.config()
+
+    def init_ui(self):
+        self.setupUi(self)
+
+    def config(self):
+        self.label_meeting_date.setText(self.date)
+        members = self.team.membersName
+        self.table_attendant.setRowCount(len(members))
+        for i in range(len(members)):
+            self.table_attendant.setItem(i, 0, QTableWidgetItem(members[i]))
+            self.table_attendant.setCellWidget(i, 1, QCheckBox())
+
+        self.meetings = Meeting(self.team.teamNum)
+
+        if self.date in self.meetings.getTeamMeetings():
+            self.meeting = self.meetings.getTeamMeeting(self.date)
+            self.meeting_memo.setPlainText(self.meeting["memo"])
+
+            attendant = self.meeting["attendant"]
+            for i in range(len(members)):
+                checkbox = self.table_attendant.cellWidget(i, 1)
+                if members[i] in attendant: checkbox.toggle()
+
+    def btn_previous_clicked(self):
+        self.calendar = TeacherMeetingMainWindow(self.team)
+        self.calendar.exec()
+        self.close()
+
+
 # 교수자: 3. 기여도 화면
-class TeacherContributionWindow(QDialog, QWidget, form_teacher_contribution_window):
-    def __init__(self):
+class TeacherContributionWindow(QDialog, QWidget, form_person_ranking_window):
+    def __init__(self, team):
         super(TeacherContributionWindow, self).__init__()
+        self.team = team
         self.init_ui()
         self.show()
 
     def init_ui(self):
         self.setupUi(self)
 
-    def btn_contribution_to_main(self):
-        self.close()
+        with open(f"./databases/meetings.json") as f:
+            attendance = json.load(f)
 
+        with open(f"./databases/groups.json") as f:
+            importance = json.load(f)
 
+        for i in range(len(self.team.membersName)):
+            attend_score = 0
+            for j in attendance[self.team.teamNum]:
+                if self.team.membersName[i] in attendance[self.team.teamNum][j]['attendant']:
+                    attend_score += 1
+
+            import_score = 0
+            for j in range(len(importance[self.team.teamNum]["todolist"])):
+                if importance[self.team.teamNum]["todolist"][j][2] == self.team.membersName[i] and \
+                        importance[self.team.teamNum]["todolist"][j][3] == "o":
+                    import_score += int(importance[self.team.teamNum]["todolist"][j][1])
+
+            self.tableWidget.setItem(i, 0, QTableWidgetItem(self.team.membersName[i]))
+            self.tableWidget.setItem(i, 1, QTableWidgetItem(str(attend_score)))
+            self.tableWidget.setItem(i, 2, QTableWidgetItem(str(import_score)))
+            self.tableWidget.setItem(i, 3, QTableWidgetItem(str(attend_score + import_score)))
 
 
 

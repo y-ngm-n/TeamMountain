@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>240</width>
-    <height>180</height>
+    <height>160</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,5 +57,25 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>btn_team_number()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>btn_team_number()</slot>
+ </slots>
 </ui>
