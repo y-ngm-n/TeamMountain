@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*- 
-
 import os
 import sys
 import json
@@ -46,6 +44,9 @@ form_teacher_window = uic.loadUiType(form_teacher)[0]
 
 form_timetable = resource_path('./views/timetable.ui')
 form_timetable_window = uic.loadUiType(form_timetable)[0]
+
+form_timetable_list = resource_path('./views/student_timetable_list.ui')
+form_timetable_list_window = uic.loadUiType(form_timetable_list)[0]
 
 form_show = resource_path('./views/show_time.ui')
 form_show_window = uic.loadUiType(form_show)[0]
@@ -210,54 +211,39 @@ class StudentWindow(QDialog, QWidget, form_student_window):
         global weeks
 
         self.setupUi(self)
-        self.label_2.setText(f"{weeks}주차")
-        self.label_3.setText(f"Student : {self.name.name}")
-        self.label_4.setText(f"Team : {self.team.name}")
+        self.table_info.setItem(-1, 1, QTableWidgetItem(f"{weeks}주차"))
+        self.table_info.setItem(0, 1, QTableWidgetItem(f"{self.name.name}"))
+        self.table_info.setItem(1, 1, QTableWidgetItem(f"{self.team.name}"))
 
     def btn_main_to_timetable(self):
-        self.hide()
         self.timetable = TimetableWindow(self.info)
         self.timetable.exec()
         self.team.matchTime()
-        self.show()
 
     def btn_main_to_show(self):
-        self.hide()
-        for member in self.team.membersClass:
-            self.show_time_table = ShowWindow(member)
-            self.show_time_table.exec()
-        self.show_time_table = ShowWindow(self.team)
+        self.show_time_table = TimetableListWindow(self.info)
         self.show_time_table.exec()
-        self.show()
 
     def btn_main_to_ranking(self):
-        self.hide()
         self.ranking = RankingWindow(self.team)
         self.ranking.exec()
-        self.show()
 
     def btn_main_to_attendance(self):
-        self.hide()
         self.attendance = MeetingMainWindow(self.info)
         self.attendance.exec()
-        self.show()
 
     def btn_main_to_contribution(self):
         with open(f"./databases/users.json") as f:
             users = json.load(f)
-        self.hide()
         if users[self.name.name]["leader"] == 1:
             self.contribution = LeaderContributionWindow(self.team)
         else:
             self.contribution = MemberContributionWindow(self.team)
         self.contribution.exec()
-        self.show()
 
     def btn_main_to_random(self):
-        self.hide()
         self.set_random = RandomWindow(self.team)
         self.set_random.exec()
-        self.show()
 
     def add_time(self, time):
         self.name.addTime(time)
@@ -1029,6 +1015,37 @@ class TimetableWindow(QDialog, QWidget, form_timetable_window):
                                        "border-color: red;"
                                        "border-radius: 3px")
         self.timeList.append("일 23:00 ~ 24:00")
+
+
+class TimetableListWindow(QDialog, QWidget, form_timetable_list_window):
+    def __init__(self, info):
+        super(TimetableListWindow, self).__init__()
+        self.info = info
+        self.user, self.team = info
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+        mems = self.team.membersName
+        self.table_timetables.setRowCount(len(mems))
+        for i in range(len(mems)):
+            btn = QPushButton(mems[i])
+            btn.clicked.connect(lambda _, x=i: self.btn_timetable_clicked(self.team.membersClass[x]))
+            self.table_timetables.setCellWidget(i, 0, btn)
+            
+    def btn_timetable_clicked(self, member):
+        self.show_time_table = ShowWindow(member)
+        self.show_time_table.exec()
+
+    def btn_team_timetable_clicked(self):
+        self.show_time_table = ShowWindow(self.team)
+        self.show_time_table.exec()
+
+    def btn_back_clicked(self):
+        self.close()
+
+
 
 
 # 학습자: 2. 시간표 조회 화면
