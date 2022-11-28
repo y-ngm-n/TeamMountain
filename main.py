@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*- 
-
 import os
 import sys
 import json
@@ -46,6 +44,9 @@ form_teacher_window = uic.loadUiType(form_teacher)[0]
 
 form_timetable = resource_path('./views/timetable.ui')
 form_timetable_window = uic.loadUiType(form_timetable)[0]
+
+form_timetable_list = resource_path('./views/student_timetable_list.ui')
+form_timetable_list_window = uic.loadUiType(form_timetable_list)[0]
 
 form_show = resource_path('./views/show_time.ui')
 form_show_window = uic.loadUiType(form_show)[0]
@@ -223,10 +224,7 @@ class StudentWindow(QDialog, QWidget, form_student_window):
 
     def btn_main_to_show(self):
         self.hide()
-        for member in self.team.membersClass:
-            self.show_time_table = ShowWindow(member)
-            self.show_time_table.exec()
-        self.show_time_table = ShowWindow(self.team)
+        self.show_time_table = TimetableListWindow(self.info)
         self.show_time_table.exec()
         self.show()
 
@@ -1029,6 +1027,37 @@ class TimetableWindow(QDialog, QWidget, form_timetable_window):
                                        "border-color: red;"
                                        "border-radius: 3px")
         self.timeList.append("일 23:00 ~ 24:00")
+
+
+class TimetableListWindow(QDialog, QWidget, form_timetable_list_window):
+    def __init__(self, info):
+        super(TimetableListWindow, self).__init__()
+        self.info = info
+        self.user, self.team = info
+        self.init_ui()
+        self.show()
+
+    def init_ui(self):
+        self.setupUi(self)
+        mems = self.team.membersName
+        self.table_timetables.setRowCount(len(mems))
+        for i in range(len(mems)):
+            btn = QPushButton(mems[i])
+            btn.clicked.connect(lambda _, x=i: self.btn_timetable_clicked(self.team.membersClass[x]))
+            self.table_timetables.setCellWidget(i, 0, btn)
+            
+    def btn_timetable_clicked(self, member):
+        self.show_time_table = ShowWindow(member)
+        self.show_time_table.exec()
+
+    def btn_team_timetable_clicked(self):
+        self.show_time_table = ShowWindow(self.team)
+        self.show_time_table.exec()
+
+    def btn_back_clicked(self):
+        self.close()
+
+
 
 
 # 학습자: 2. 시간표 조회 화면
