@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>시간표 조회</string>
   </property>
   <widget class="QTableWidget" name="table_timetables">
    <property name="geometry">
@@ -46,7 +46,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>70</x>

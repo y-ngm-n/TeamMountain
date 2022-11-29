@@ -52,7 +52,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>점수 부여</string>
+    <string>점수 입력</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_4">

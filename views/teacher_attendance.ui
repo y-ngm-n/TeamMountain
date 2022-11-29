@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>출석 체크</string>
+   <string>활동 기록 조회</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background: url(:/background/background.png);

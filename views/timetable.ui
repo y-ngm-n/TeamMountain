@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>일정 맞추기</string>
+   <string>시간표 입력</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">

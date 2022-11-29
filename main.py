@@ -30,9 +30,6 @@ def resource_path(relative_path):
 form = resource_path('./views/main.ui')
 form_class = uic.loadUiType(form)[0]
 
-form_start = resource_path('./views/start.ui')
-form_start_window = uic.loadUiType(form_start)[0]
-
 form_login = resource_path('./views/login.ui')
 form_login_window = uic.loadUiType(form_login)[0]
 
@@ -86,9 +83,6 @@ form_random_window = uic.loadUiType(form_random)[0]
 
 form_teacher_attendance = resource_path('./views/teacher_attendance.ui')
 form_teacher_attendance_window = uic.loadUiType(form_teacher_attendance)[0]
-
-form_teacher_contribution = resource_path('./views/teacher_contribution.ui')
-form_teacher_contribution_window = uic.loadUiType(form_teacher_contribution)[0]
 
 form_teacher_ranking = resource_path('./views/teacher_score.ui')
 form_teacher_ranking_window = uic.loadUiType(form_teacher_ranking)[0]
@@ -1157,6 +1151,24 @@ class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
         for i in range(9):
             self.tableWidget.setItem(i, 0, QTableWidgetItem(teamList[i].name))
             self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
+            if teamList[i].score >= 95:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("A+"))
+            elif teamList[i].score >= 90:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("A"))
+            elif teamList[i].score >= 85:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("B+"))
+            elif teamList[i].score >= 80:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("B"))
+            elif teamList[i].score >= 75:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("C+"))
+            elif teamList[i].score >= 70:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("C"))
+            elif teamList[i].score >= 65:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("D+"))
+            elif teamList[i].score >= 60:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("D"))
+            else:
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("F"))
 
 
 # 학습자: 4. 회의 목록 달력

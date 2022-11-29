@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>순위 보기</string>
+   <string>점수 확인</string>
   </property>
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">

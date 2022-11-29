@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>일정 관리</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
