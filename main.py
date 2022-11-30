@@ -1148,27 +1148,23 @@ class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
 
         self.setupUi(self)
 
+        with open(f"./databases/groups.json") as f:
+            groups = json.load(f)
+
+        score = list()
+        for i in range(9):
+            score.append((groups[teamList[i].teamNum]["score"], teamList[i].teamNum))
+        score.sort(reverse=True)
+
         for i in range(9):
             self.tableWidget.setItem(i, 0, QTableWidgetItem(teamList[i].name))
             self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
-            if teamList[i].score >= 95:
+            if score.index((groups[teamList[i].teamNum]["score"], teamList[i].teamNum)) <= 4:
                 self.tableWidget.setItem(i, 2, QTableWidgetItem("A+"))
-            elif teamList[i].score >= 90:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("A"))
-            elif teamList[i].score >= 85:
+            elif score.index((groups[teamList[i].teamNum]["score"], teamList[i].teamNum)) <= 7:
                 self.tableWidget.setItem(i, 2, QTableWidgetItem("B+"))
-            elif teamList[i].score >= 80:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("B"))
-            elif teamList[i].score >= 75:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("C+"))
-            elif teamList[i].score >= 70:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("C"))
-            elif teamList[i].score >= 65:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("D+"))
-            elif teamList[i].score >= 60:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("D"))
             else:
-                self.tableWidget.setItem(i, 2, QTableWidgetItem("F"))
+                self.tableWidget.setItem(i, 2, QTableWidgetItem("C+"))
 
 
 # 학습자: 4. 회의 목록 달력
