@@ -1158,13 +1158,14 @@ class TeamRankingWindow(QDialog, QWidget, form_team_ranking_window):
 
         for i in range(9):
             self.tableWidget.setItem(i, 0, QTableWidgetItem(teamList[i].name))
-            self.tableWidget.setItem(i, 1, QTableWidgetItem(str(teamList[i].score)))
+            self.tableWidget.setItem(i, 1, QTableWidgetItem(str(groups[teamList[i].teamNum]["score"])))
             if score.index((groups[teamList[i].teamNum]["score"], teamList[i].teamNum)) <= 4:
                 self.tableWidget.setItem(i, 2, QTableWidgetItem("A+"))
             elif score.index((groups[teamList[i].teamNum]["score"], teamList[i].teamNum)) <= 7:
                 self.tableWidget.setItem(i, 2, QTableWidgetItem("B+"))
             else:
                 self.tableWidget.setItem(i, 2, QTableWidgetItem("C+"))
+            self.tableWidget.update()
 
 
 # 학습자: 4. 회의 목록 달력
@@ -1390,7 +1391,6 @@ class MemberContributionWindow(QDialog, QWidget, form_member_contribution_window
             json.dump(groups, f, indent=4, ensure_ascii=False)
 
         self.close()
-
 
 
 class addToDoWindow(QDialog, QWidget, form_todo_window):
