@@ -1645,7 +1645,7 @@ class TeacherMeetingMainWindow(QDialog, QWidget, form_teacher_meeting_window):
         self.team = team
         self.meet = Meeting(self.team.teamNum)
         self.meetings = self.meet.getTeamMeetings()
-        color = QColor(0, 100, 0)
+        color = QColor(255, 208, 138)
         self.fm = QTextCharFormat()
         self.fm.setBackground(color)
         self.init_ui()
