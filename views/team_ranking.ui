@@ -90,7 +90,7 @@
    </column>
    <column>
     <property name="text">
-     <string>학점</string>
+     <string>예상 학점</string>
     </property>
    </column>
    <item row="0" column="0">
